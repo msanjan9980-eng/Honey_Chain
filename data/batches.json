@@ -2,8 +2,8 @@
   "HC-2026-0842": {
     "batchId": "HC-2026-0842",
     "verified": true,
-    "beekeeper": "Ravi Kumar",
-    "location": "Mandya, Karnataka",
+    "beekeeper": "Sanjan M",
+    "location": "Chikmagaluru, Karnataka",
     "harvestDate": "08 Sep 2026",
     "healthAtHarvest": 94.8,
     "healthLabel": "Healthy",
@@ -14,17 +14,17 @@
     "ipfsCid": "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
     "status": "verified",
     "events": [
-      { "type": "harvested", "date": "08 Sep 2026", "location": "Mandya, Karnataka", "actor": "Ravi Kumar" },
-      { "type": "extracted_and_tested", "date": "09 Sep 2026", "location": "Mandya, Karnataka", "actor": "Quality Lab" },
-      { "type": "packaged", "date": "09 Sep 2026", "location": "Mandya, Karnataka", "actor": "Packing Unit" },
+      { "type": "harvested", "date": "08 Sep 2026", "location": "Chikmagaluru, Karnataka", "actor": "Sanjan M" },
+      { "type": "extracted_and_tested", "date": "09 Sep 2026", "location": "Chikmagaluru, Karnataka", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "09 Sep 2026", "location": "Chikmagaluru, Karnataka", "actor": "Packing Unit" },
       { "type": "shipped", "date": "10 Sep 2026", "location": "In transit", "actor": "Logistics" }
     ]
   },
   "HC-2026-0417": {
     "batchId": "HC-2026-0417",
     "verified": true,
-    "beekeeper": "Ramesh Patel",
-    "location": "Kutch, Gujarat",
+    "beekeeper": "Ruhan Singh Kharayat",
+    "location": "Yelahanka, Karnataka",
     "harvestDate": "17 Apr 2026",
     "healthAtHarvest": 92.1,
     "healthLabel": "Healthy",
@@ -35,16 +35,16 @@
     "ipfsCid": "bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku",
     "status": "verified",
     "events": [
-      { "type": "harvested", "date": "17 Apr 2026", "location": "Kutch, Gujarat", "actor": "Ramesh Patel" },
-      { "type": "extracted_and_tested", "date": "18 Apr 2026", "location": "Kutch, Gujarat", "actor": "Quality Lab" },
-      { "type": "packaged", "date": "18 Apr 2026", "location": "Kutch, Gujarat", "actor": "Packing Unit" }
+      { "type": "harvested", "date": "17 Apr 2026", "location": "Yelahanka, Karnataka", "actor": "Ruhan Singh Kharayat" },
+      { "type": "extracted_and_tested", "date": "18 Apr 2026", "location": "Yelahanka, Karnataka", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "18 Apr 2026", "location": "Yelahanka, Karnataka", "actor": "Packing Unit" }
     ]
   },
   "HC-2026-0523": {
     "batchId": "HC-2026-0523",
     "verified": true,
-    "beekeeper": "Sunita Devi",
-    "location": "Sundarbans, WB",
+    "beekeeper": "Sriram",
+    "location": "Palakad, Kerala",
     "harvestDate": "23 May 2026",
     "healthAtHarvest": 88.4,
     "healthLabel": "Healthy",
@@ -55,16 +55,16 @@
     "ipfsCid": "bafybeif7ztnhj4ojvzssyitxr2z6svmhzz5jf2ybmqxwvyd7cyzpqgvxfy",
     "status": "verified",
     "events": [
-      { "type": "harvested", "date": "23 May 2026", "location": "Sundarbans, WB", "actor": "Sunita Devi" },
-      { "type": "extracted_and_tested", "date": "24 May 2026", "location": "Sundarbans, WB", "actor": "Quality Lab" },
-      { "type": "packaged", "date": "24 May 2026", "location": "Sundarbans, WB", "actor": "Packing Unit" },
+      { "type": "harvested", "date": "23 May 2026", "location": "Palakad, Kerala", "actor": "Sriram" },
+      { "type": "extracted_and_tested", "date": "24 May 2026", "location": "Palakad, Kerala", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "24 May 2026", "location": "Palakad, Kerala", "actor": "Packing Unit" },
       { "type": "shipped", "date": "25 May 2026", "location": "In transit", "actor": "Logistics" }
     ]
   },
   "HC-2026-0614": {
     "batchId": "HC-2026-0614",
     "verified": true,
-    "beekeeper": "Lakshmi Narayanan",
+    "beekeeper": "Sri Vidya",
     "location": "Coorg, Karnataka",
     "harvestDate": "14 Jun 2026",
     "healthAtHarvest": 96.2,
@@ -76,7 +76,7 @@
     "ipfsCid": "bafybeicwqnmkc7fah3lq5vzpxrdtv6gojzxv3kyhr4wh6t7pr32wq6zvxe",
     "status": "verified",
     "events": [
-      { "type": "harvested", "date": "14 Jun 2026", "location": "Coorg, Karnataka", "actor": "Lakshmi Narayanan" },
+      { "type": "harvested", "date": "14 Jun 2026", "location": "Coorg, Karnataka", "actor": "Sri Vidya" },
       { "type": "extracted_and_tested", "date": "15 Jun 2026", "location": "Coorg, Karnataka", "actor": "Quality Lab" },
       { "type": "packaged", "date": "15 Jun 2026", "location": "Coorg, Karnataka", "actor": "Packing Unit" },
       { "type": "shipped", "date": "16 Jun 2026", "location": "In transit", "actor": "Logistics" }
@@ -126,7 +126,7 @@
   "HC-2026-0805": {
     "batchId": "HC-2026-0805",
     "verified": true,
-    "beekeeper": "Harpreet Singh",
+    "beekeeper": "Carolyn",
     "location": "Kangra, Himachal Pradesh",
     "harvestDate": "05 Aug 2026",
     "healthAtHarvest": 97.1,
@@ -138,7 +138,7 @@
     "ipfsCid": "bafybeihrtwvz6q3kxp9j2mty7sfn4bgc1el8zd0auqmwixjtd9vh3pq2mc",
     "status": "verified",
     "events": [
-      { "type": "harvested", "date": "05 Aug 2026", "location": "Kangra, Himachal Pradesh", "actor": "Harpreet Singh" },
+      { "type": "harvested", "date": "05 Aug 2026", "location": "Kangra, Himachal Pradesh", "actor": "Carolyn" },
       { "type": "extracted_and_tested", "date": "06 Aug 2026", "location": "Kangra, Himachal Pradesh", "actor": "Quality Lab" },
       { "type": "packaged", "date": "06 Aug 2026", "location": "Kangra, Himachal Pradesh", "actor": "Packing Unit" },
       { "type": "shipped", "date": "07 Aug 2026", "location": "In transit", "actor": "Logistics" }
@@ -147,7 +147,7 @@
   "HC-2026-0819": {
     "batchId": "HC-2026-0819",
     "verified": true,
-    "beekeeper": "Meena Kumari",
+    "beekeeper": "Saranya",
     "location": "Nainital, Uttarakhand",
     "harvestDate": "19 Aug 2026",
     "healthAtHarvest": 93.3,
@@ -159,7 +159,7 @@
     "ipfsCid": "bafybeifqyxwv5p2jzm8n3kty6sdg4bch9el2zr0auqmwixjtd5vh8pq1md",
     "status": "verified",
     "events": [
-      { "type": "harvested", "date": "19 Aug 2026", "location": "Nainital, Uttarakhand", "actor": "Meena Kumari" },
+      { "type": "harvested", "date": "19 Aug 2026", "location": "Nainital, Uttarakhand", "actor": "Saranya" },
       { "type": "extracted_and_tested", "date": "20 Aug 2026", "location": "Nainital, Uttarakhand", "actor": "Quality Lab" },
       { "type": "packaged", "date": "20 Aug 2026", "location": "Nainital, Uttarakhand", "actor": "Packing Unit" },
       { "type": "shipped", "date": "21 Aug 2026", "location": "In transit", "actor": "Logistics" }
@@ -188,7 +188,7 @@
   "HC-2026-0906": {
     "batchId": "HC-2026-0906",
     "verified": true,
-    "beekeeper": "Fatima Begum",
+    "beekeeper": "Anubhav Chatterjee",
     "location": "Sundarbans, WB",
     "harvestDate": "06 Sep 2026",
     "healthAtHarvest": 90.9,
