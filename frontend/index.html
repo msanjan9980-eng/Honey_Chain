@@ -573,6 +573,67 @@
   }
   .verify-hash b{color:var(--honey);}
 
+  /* ============ QR SCANNER ============ */
+  .scan-btn{
+    margin-top:12px;
+    display:inline-flex;align-items:center;gap:8px;
+    background:transparent;color:var(--text);
+    border:1px solid var(--border-2);
+    padding:12px 20px;border-radius:10px;font-size:0.94rem;font-weight:600;
+    cursor:pointer;min-height:48px;transition:.2s var(--ease);
+  }
+  .scan-btn:hover{border-color:var(--honey);color:var(--honey);background:var(--glow);}
+  .scan-btn:active{transform:scale(.97);}
+
+  .scan-modal{
+    position:fixed;inset:0;z-index:400;
+    display:none;align-items:center;justify-content:center;
+  }
+  .scan-modal.show{display:flex;animation:fadeUp .25s var(--ease);}
+  .scan-modal-backdrop{
+    position:absolute;inset:0;background:rgba(0,0,0,0.72);
+    backdrop-filter:blur(6px);
+  }
+  .scan-modal-body{
+    position:relative;z-index:1;
+    background:var(--card);border:1px solid var(--border-2);
+    border-radius:18px;padding:22px;
+    width:min(480px, calc(100vw - 32px));
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  }
+  .scan-modal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:0.92rem;color:var(--muted);margin-bottom:16px;gap:12px;
+  }
+  .scan-close{
+    background:transparent;border:1px solid var(--border-2);color:var(--muted);
+    width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem;
+    display:flex;align-items:center;justify-content:center;transition:.2s;
+    flex-shrink:0;
+  }
+  .scan-close:hover{color:var(--honey);border-color:var(--honey);}
+  .qr-reader{
+    width:100%;aspect-ratio:1/1;background:#0b0b0b;
+    border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  }
+  .qr-reader video{border-radius:12px;}
+  .scan-modal-foot{
+    margin-top:14px;font-size:0.82rem;color:var(--dim);text-align:center;
+  }
+  .scan-modal-foot.ok{color:var(--green);}
+  .scan-modal-foot.err{color:var(--red);}
+
+  .verify-loading{
+    display:inline-flex;align-items:center;gap:8px;color:var(--muted);
+  }
+  .verify-loading .dot{
+    width:6px;height:6px;border-radius:50%;background:var(--honey);
+    animation:dotBlink 1s ease-in-out infinite;
+  }
+  .verify-loading .dot:nth-child(2){animation-delay:.15s;}
+  .verify-loading .dot:nth-child(3){animation-delay:.3s;}
+  @keyframes dotBlink{0%,100%{opacity:.3;}50%{opacity:1;}}
+
   /* ============ TABS ============ */
   .stack-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:36px;}
   .tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
@@ -729,6 +790,7 @@
     .metrics{grid-template-columns:1fr;}
     .verify-form{flex-direction:column;}
     .verify-form button{width:100%;padding:14px;}
+    .scan-btn{width:100%;justify-content:center;}
     .hero-stats{gap:26px;}
     .trust-strip{padding:20px;}
     .trust-inner{flex-direction:column;gap:12px;align-items:flex-start;}
@@ -1082,6 +1144,9 @@
           <input type="text" id="batchInput" value="HC-2026-0842" placeholder="Enter batch ID" autocomplete="off"/>
           <button type="submit">Check it →</button>
         </form>
+        <button type="button" class="scan-btn" id="scanBtn">
+          <span aria-hidden="true">📷</span> Scan QR code
+        </button>
         <div class="verify-hint" id="verifyHint" role="status" aria-live="polite">
           Try the sample batch ID above to see a real record.
         </div>
@@ -1126,6 +1191,19 @@
       </div>
       <div class="verify-hash">
         Digital fingerprint <b id="r-hash">0x8f4c…91ab27</b>
+      </div>
+    </div>
+
+    <!-- QR SCANNER MODAL -->
+    <div class="scan-modal" id="scanModal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="scan-modal-backdrop" onclick="closeScanner()"></div>
+      <div class="scan-modal-body">
+        <div class="scan-modal-head">
+          <span>Point your camera at the QR code on the jar</span>
+          <button class="scan-close" onclick="closeScanner()" aria-label="Close scanner">✕</button>
+        </div>
+        <div id="qr-reader" class="qr-reader"></div>
+        <div class="scan-modal-foot" id="scanStatus">Initialising camera…</div>
       </div>
     </div>
   </div>
@@ -1310,6 +1388,12 @@
 <button class="to-top" id="toTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <div id="toast" role="status" aria-live="polite">✓ Verified</div>
+
+<!-- QR SCANNER LIBRARY -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+<!-- BACKEND CONFIG — change this to your deployed API URL -->
+<script>window.HONEYCHAIN_API = 'http://localhost:4000';</script>
 
 <script>
 /* ============================================================
@@ -1817,14 +1901,203 @@ setInterval(addBlock, 3800);
 })();
 
 /* ============================================================
-   VERIFY BATCH
+   VERIFY BATCH — BACKEND-DRIVEN
    ============================================================ */
-const batches = {
-  'HC-2026-0842': { keeper:'Ravi Kumar',   loc:'Mandya, Karnataka', date:'08 Sep 2026', health:'94.8% · Healthy' },
-  'HC-2026-0417': { keeper:'Ramesh Patel', loc:'Kutch, Gujarat',    date:'17 Apr 2026', health:'92.1% · Healthy' },
-  'HC-2026-0523': { keeper:'Sunita Devi',  loc:'Sundarbans, WB',    date:'23 May 2026', health:'88.4% · Healthy' }
-};
+const API_BASE = (window.HONEYCHAIN_API || 'http://localhost:4000').replace(/\/$/, '');
 
+// Small helper for fetch with timeout
+async function fetchJSON(url, opts = {}, timeoutMs = 8000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { ...opts, signal: ctrl.signal });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  } finally { clearTimeout(t); }
+}
+
+// Debounce duplicate scans
+let lastScanned = { id: '', at: 0 };
+function shouldIgnoreScan(id) {
+  const now = Date.now();
+  if (id === lastScanned.id && now - lastScanned.at < 2500) return true;
+  lastScanned = { id, at: now };
+  return false;
+}
+
+// Accepts plain IDs, full URLs, /verify/<id>, ?batch=<id>
+function extractBatchId(input) {
+  if (!input) return '';
+  const s = String(input).trim();
+  try {
+    const u = new URL(s);
+    const q = u.searchParams.get('batch');
+    if (q) return q.trim().toUpperCase();
+    const parts = u.pathname.split('/').filter(Boolean);
+    if (parts.length) return parts[parts.length - 1].trim().toUpperCase();
+  } catch { /* not a URL */ }
+  return s.toUpperCase();
+}
+
+// Format the timeline event type → human readable
+function prettyEvent(type) {
+  return ({
+    harvested: 'Harvested',
+    extracted_and_tested: 'Extracted and quality-checked',
+    packaged: 'Packaged and sealed',
+    shipped: 'Shipped'
+  })[type] || String(type || '').replace(/_/g, ' ');
+}
+
+function renderVerifyResult(d) {
+  document.getElementById('r-id').textContent     = d.batchId;
+  document.getElementById('r-keeper').textContent = d.beekeeper;
+  document.getElementById('r-loc').textContent    = d.location;
+  document.getElementById('r-date').textContent   = d.harvestDate;
+  document.getElementById('r-health').textContent = `${d.healthAtHarvest}% · ${d.healthLabel}`;
+  document.getElementById('r-hash').textContent   = d.onchainHash;
+
+  const tl = document.querySelector('.tl-list');
+  tl.innerHTML = (d.events || []).slice(0, 4).map(e =>
+    `<div class="tl">${prettyEvent(e.type)} · ${e.date}${e.location ? ' · ' + e.location : ''}</div>`
+  ).join('');
+
+  const result = document.getElementById('verifyResult');
+  result.classList.remove('show');
+  void result.offsetWidth;
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+async function verifyBatch(rawId) {
+  const input = document.getElementById('batchInput');
+  const hint  = document.getElementById('verifyHint');
+  const qr    = document.getElementById('qrBox');
+  const result = document.getElementById('verifyResult');
+
+  const id = extractBatchId(rawId ?? input.value);
+  if (!id) return;
+
+  input.value = id;
+  qr.classList.add('scanning');
+  setTimeout(() => qr.classList.remove('scanning'), 800);
+
+  hint.innerHTML = `<span class="verify-loading">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    &nbsp;Looking up batch ${id}…
+  </span>`;
+  hint.style.color = '';
+
+  try {
+    const { ok, status, data } = await fetchJSON(`${API_BASE}/api/batches/${encodeURIComponent(id)}`);
+
+    if (!ok || !data?.success) {
+      hint.textContent = status === 404
+        ? `✗ We couldn't find batch ${id}. Try HC-2026-0842`
+        : `✗ Could not reach the verification service. Please try again.`;
+      hint.style.color = 'var(--red)';
+      result.classList.remove('show');
+      showToast('Batch not found', true);
+      return;
+    }
+
+    hint.textContent = '✓ This batch is registered and authentic.';
+    hint.style.color = '';
+    renderVerifyResult(data.data);
+    showToast('✓ Batch ' + id + ' verified');
+    launchConfetti();
+  } catch (err) {
+    console.error(err);
+    hint.textContent = '✗ Network error. Is the backend running?';
+    hint.style.color = 'var(--red)';
+    showToast('Network error', true);
+  }
+}
+
+/* ---------- QR SCANNER ---------- */
+let html5Qr = null;
+
+async function openScanner() {
+  const modal = document.getElementById('scanModal');
+  const status = document.getElementById('scanStatus');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  status.textContent = 'Initialising camera…';
+  status.className = 'scan-modal-foot';
+
+  if (!window.Html5Qrcode) {
+    status.textContent = '✗ Scanner library failed to load. Check your connection.';
+    status.className = 'scan-modal-foot err';
+    return;
+  }
+
+  try {
+    html5Qr = new Html5Qrcode('qr-reader', { verbose: false });
+    const config = { fps: 10, qrbox: { width: 240, height: 240 } };
+
+    await html5Qr.start(
+      { facingMode: 'environment' },
+      config,
+      (decodedText) => {
+        const id = extractBatchId(decodedText);
+        if (!id) return;
+        if (shouldIgnoreScan(id)) return;
+        status.textContent = `✓ Detected: ${id}`;
+        status.className = 'scan-modal-foot ok';
+        setTimeout(async () => {
+          await closeScanner();
+          verifyBatch(id);
+        }, 350);
+      },
+      () => { /* per-frame decode errors are normal; ignore */ }
+    );
+
+    status.textContent = 'Align the QR code inside the box.';
+  } catch (err) {
+    console.error(err);
+    status.textContent = '✗ Camera unavailable. Use the manual field instead.';
+    status.className = 'scan-modal-foot err';
+  }
+}
+
+async function closeScanner() {
+  const modal = document.getElementById('scanModal');
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  if (html5Qr) {
+    try { await html5Qr.stop(); await html5Qr.clear(); } catch {}
+    html5Qr = null;
+  }
+}
+
+// Wire up the scan button
+document.getElementById('scanBtn').addEventListener('click', openScanner);
+
+// ESC closes the modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.getElementById('scanModal').classList.contains('show')) {
+    closeScanner();
+  }
+});
+
+/* ---------- Sample chips (trigger real fetch) ---------- */
+(function buildChips(){
+  const wrap = document.getElementById('sampleChips');
+  const ids = ['HC-2026-0842', 'HC-2026-0417', 'HC-2026-0523'];
+  ids.forEach(id => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.textContent = id;
+    b.onclick = () => {
+      document.getElementById('batchInput').value = id;
+      verifyBatch(id);
+    };
+    wrap.appendChild(b);
+  });
+})();
+
+/* ---------- Decorative QR visual (sample) ---------- */
 (function buildQR(){
   const qr = document.getElementById('qrBox');
   const pattern = [
@@ -1839,57 +2112,15 @@ const batches = {
   qr.innerHTML = pattern.map(p => p ? '<span></span>' : '<span class="empty"></span>').join('');
 })();
 
-(function buildChips(){
-  const wrap = document.getElementById('sampleChips');
-  Object.keys(batches).forEach(id => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'chip';
-    b.textContent = id;
-    b.onclick = () => {
-      document.getElementById('batchInput').value = id;
-      verifyBatch();
-    };
-    wrap.appendChild(b);
-  });
-})();
-
-function verifyBatch(){
-  const id = document.getElementById('batchInput').value.trim().toUpperCase();
-  const data = batches[id];
-  const result = document.getElementById('verifyResult');
-  const hint = document.getElementById('verifyHint');
-  const qr = document.getElementById('qrBox');
-
-  qr.classList.add('scanning');
-  setTimeout(() => qr.classList.remove('scanning'), 800);
-
-  if (!data){
-    hint.textContent = '✗ We couldn\'t find that batch. Try the sample: HC-2026-0842';
-    hint.style.color = 'var(--red)';
-    result.classList.remove('show');
-    showToast('Batch not found', true);
-    return;
+/* ---------- Deep-link: ?batch=HC-2026-0842 ---------- */
+(function checkDeepLink(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('batch');
+  if (id) {
+    document.getElementById('batchInput').value = id;
+    setTimeout(() => verifyBatch(id), 500);
   }
-  hint.textContent = '✓ This batch is registered and authentic.';
-  hint.style.color = '';
-
-  document.getElementById('r-id').textContent = id;
-  document.getElementById('r-keeper').textContent = data.keeper;
-  document.getElementById('r-loc').textContent = data.loc;
-  document.getElementById('r-date').textContent = data.date;
-  document.getElementById('r-health').textContent = data.health;
-  document.getElementById('r-hash').textContent =
-    '0x' + Array.from({length:12}, () => Math.floor(Math.random()*16).toString(16)).join('') +
-    '…' + Array.from({length:6}, () => Math.floor(Math.random()*16).toString(16)).join('');
-
-  result.classList.remove('show');
-  void result.offsetWidth;
-  result.classList.add('show');
-  result.scrollIntoView({ behavior:'smooth', block:'center' });
-  showToast('✓ Batch ' + id + ' verified');
-  launchConfetti();
-}
+})();
 
 /* ============================================================
    CONFETTI
