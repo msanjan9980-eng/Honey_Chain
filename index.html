@@ -1776,11 +1776,11 @@ const ledger = document.getElementById('ledgerScroll');
 const blockCountEl = document.getElementById('blockCount');
 let blockNum = 0;
 const sampleBlocks = [
-  { batch:'HC-2026-0842', hive:'HC-0247', keeper:'Ravi Kumar',    loc:'Mandya, KA' },
-  { batch:'HC-2026-0417', hive:'HC-0311', keeper:'Ramesh Patel',  loc:'Kutch, GJ' },
-  { batch:'HC-2026-0523', hive:'HC-0129', keeper:'Sunita Devi',   loc:'Sundarbans, WB' },
-  { batch:'HC-2026-0614', hive:'HC-0355', keeper:'Lakshmi Narayanan', loc:'Coorg, KA' },
-  { batch:'HC-2026-0805', hive:'HC-0478', keeper:'Harpreet Singh', loc:'Kangra, HP' }
+  { batch:'HC-2026-0842', hive:'HC-0247', keeper:'Sanjan M',    loc:'Chikmagaluru, KA' },
+  { batch:'HC-2026-0417', hive:'HC-0311', keeper:'Ruhan Singh Kharayat',  loc:'Yelahanka, KA' },
+  { batch:'HC-2026-0523', hive:'HC-0129', keeper:'Sriram',   loc:'Palakad, KL' },
+  { batch:'HC-2026-0614', hive:'HC-0355', keeper:'Sri Vidya', loc:'Coorg, KA' },
+  { batch:'HC-2026-0805', hive:'HC-0478', keeper:'Carolyn', loc:'Kangra, HP' }
 ];
 let blockIdx = 0;
 
@@ -1853,17 +1853,16 @@ setInterval(addBlock, 3800);
 })();
 
 /* ============================================================
-   VERIFY BATCH — STATIC JSON LOOKUP
+   VERIFY BATCH — STATIC JSON LOOKUP (no-cache)
    ============================================================ */
 
-let __batchesCache = null;
-
 async function loadBatches() {
-  if (__batchesCache) return __batchesCache;
-  const res = await fetch('data/batches.json', { cache: 'force-cache' });
+  // Always fetch fresh from the network; bypass browser + CDN cache
+  const res = await fetch('/data/batches.json?v=' + Date.now(), {
+    cache: 'no-store'
+  });
   if (!res.ok) throw new Error('Could not load batch data');
-  __batchesCache = await res.json();
-  return __batchesCache;
+  return await res.json();
 }
 
 let lastScanned = { id: '', at: 0 };
