@@ -1,0 +1,64 @@
+{
+  "HC-2026-0842": {
+    "batchId": "HC-2026-0842",
+    "verified": true,
+    "beekeeper": "Ravi Kumar",
+    "location": "Mandya, Karnataka",
+    "harvestDate": "08 Sep 2026",
+    "healthAtHarvest": 94.8,
+    "healthLabel": "Healthy",
+    "weightKg": 18.6,
+    "moisturePct": 17.2,
+    "onchainHash": "0x8f4c9a2e71b4d3f60188c2a5b6d9e0f4a1c8…91ab27",
+    "blockNumber": 8421,
+    "ipfsCid": "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "08 Sep 2026", "location": "Mandya, Karnataka", "actor": "Ravi Kumar" },
+      { "type": "extracted_and_tested", "date": "09 Sep 2026", "location": "Mandya, Karnataka", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "09 Sep 2026", "location": "Mandya, Karnataka", "actor": "Packing Unit" },
+      { "type": "shipped", "date": "10 Sep 2026", "location": "In transit", "actor": "Logistics" }
+    ]
+  },
+  "HC-2026-0417": {
+    "batchId": "HC-2026-0417",
+    "verified": true,
+    "beekeeper": "Ramesh Patel",
+    "location": "Kutch, Gujarat",
+    "harvestDate": "17 Apr 2026",
+    "healthAtHarvest": 92.1,
+    "healthLabel": "Healthy",
+    "weightKg": 16.4,
+    "moisturePct": 17.8,
+    "onchainHash": "0x3a91f4c8e2b6d7a0f5c3e1b9a8d4f2c7e6b0…4d02fe",
+    "blockNumber": 5217,
+    "ipfsCid": "bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "17 Apr 2026", "location": "Kutch, Gujarat", "actor": "Ramesh Patel" },
+      { "type": "extracted_and_tested", "date": "18 Apr 2026", "location": "Kutch, Gujarat", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "18 Apr 2026", "location": "Kutch, Gujarat", "actor": "Packing Unit" }
+    ]
+  },
+  "HC-2026-0523": {
+    "batchId": "HC-2026-0523",
+    "verified": true,
+    "beekeeper": "Sunita Devi",
+    "location": "Sundarbans, WB",
+    "harvestDate": "23 May 2026",
+    "healthAtHarvest": 88.4,
+    "healthLabel": "Healthy",
+    "weightKg": 14.2,
+    "moisturePct": 18.4,
+    "onchainHash": "0x7c2e8a1f9b4d6e0a3c5f7b2d8e1a4c6f9b3e…a71c05",
+    "blockNumber": 6394,
+    "ipfsCid": "bafybeif7ztnhj4ojvzssyitxr2z6svmhzz5jf2ybmqxwvyd7cyzpqgvxfy",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "23 May 2026", "location": "Sundarbans, WB", "actor": "Sunita Devi" },
+      { "type": "extracted_and_tested", "date": "24 May 2026", "location": "Sundarbans, WB", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "24 May 2026", "location": "Sundarbans, WB", "actor": "Packing Unit" },
+      { "type": "shipped", "date": "25 May 2026", "location": "In transit", "actor": "Logistics" }
+    ]
+  }
+}

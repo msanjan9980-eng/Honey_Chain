@@ -74,7 +74,6 @@
     html{scroll-behavior:auto;}
   }
 
-  /* ============ PRELOADER ============ */
   #preloader{
     position:fixed;inset:0;z-index:9999;
     background:var(--bg);
@@ -94,7 +93,6 @@
   .pre-brand{font-size:0.85rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
   .pre-brand b{color:var(--honey);}
 
-  /* ============ CURSOR GLOW ============ */
   .cursor-glow{
     position:fixed;top:0;left:0;width:420px;height:420px;
     border-radius:50%;pointer-events:none;z-index:1;
@@ -104,7 +102,6 @@
   }
   @media (hover:hover) and (pointer:fine){ .cursor-glow{opacity:1;} }
 
-  /* ============ SCROLL PROGRESS ============ */
   .scroll-progress{
     position:fixed;top:0;left:0;height:3px;width:0%;
     background:linear-gradient(90deg,var(--honey),var(--honey-soft));
@@ -112,7 +109,6 @@
     box-shadow:0 0 12px var(--honey);
   }
 
-  /* ============ TICKER ============ */
   .ticker{
     background:var(--bg-2);border-bottom:1px solid var(--border);
     padding:8px 0;overflow:hidden;position:relative;z-index:50;
@@ -129,7 +125,6 @@
   .ticker-item b{color:var(--text);font-weight:600;}
   .ticker-item .pos{color:var(--green);}
 
-  /* ============ NAV ============ */
   nav{
     position:sticky;top:0;z-index:100;
     background:color-mix(in srgb, var(--bg) 86%, transparent);
@@ -174,7 +169,6 @@
   }
   .nav-cta:hover{background:var(--honey-soft);transform:translateY(-1px);}
 
-  /* ============ HERO ============ */
   .hero{
     padding:80px 32px 70px;max-width:var(--maxw);margin:0 auto;
     display:grid;grid-template-columns:1.1fr 0.9fr;gap:70px;align-items:center;
@@ -234,7 +228,6 @@
   }
   .stat .lbl{font-size:0.8rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
 
-  /* HIVE VISUAL */
   .hive-visual{
     position:relative;background:var(--card);border:1px solid var(--border);
     border-radius:18px;padding:24px;aspect-ratio:1/1;max-width:480px;margin-left:auto;
@@ -288,7 +281,6 @@
     font-size:0.75rem;color:var(--dim);letter-spacing:1.5px;font-weight:600;
   }
 
-  /* ============ TRUST STRIP ============ */
   .trust-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-2);padding:22px 32px;overflow:hidden;transition:background .4s;}
   .trust-inner{
     max-width:var(--maxw);margin:0 auto;display:flex;justify-content:center;
@@ -298,14 +290,12 @@
   .trust-inner span::before{content:"✓";color:var(--honey);font-weight:700;}
   .trust-inner span:hover{color:var(--text);}
 
-  /* ============ SECTION BASE ============ */
   section{padding:88px 32px;max-width:var(--maxw);margin:0 auto;position:relative;z-index:2;}
   .section-eyebrow{color:var(--honey);font-size:0.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
   .section-title{font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:800;line-height:1.15;letter-spacing:-0.5px;margin-bottom:16px;}
   .section-title .accent{color:var(--honey);}
   .section-lead{color:var(--muted);font-size:1.02rem;line-height:1.7;max-width:520px;}
 
-  /* ============ REVEAL ============ */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
   .reveal.in{opacity:1;transform:translateY(0);}
   .reveal.d1{transition-delay:.06s;}
@@ -313,7 +303,6 @@
   .reveal.d3{transition-delay:.18s;}
   .reveal.d4{transition-delay:.24s;}
 
-  /* ============ STEP CARDS ============ */
   .steps-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:52px;}
   .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
   .step-card{
@@ -338,7 +327,6 @@
   .step-card p{font-size:0.94rem;color:var(--muted);line-height:1.6;}
   .step-card .tech-note{margin-top:16px;padding-top:14px;border-top:1px dashed var(--border);font-size:0.8rem;color:var(--dim);line-height:1.55;}
 
-  /* ============ DASHBOARD ============ */
   .dash-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:44px;}
   .dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;}
   .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;transition:background .4s;}
@@ -369,7 +357,6 @@
   .metric .delta{font-size:0.82rem;color:var(--green);}
   .sparkline{width:100%;height:22px;margin-top:6px;}
 
-  /* ============ CHART ============ */
   .chart-label{font-size:0.86rem;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:14px;font-weight:500;}
   .line-chart{position:relative;width:100%;height:220px;}
   .line-chart svg{width:100%;height:100%;display:block;overflow:visible;}
@@ -417,7 +404,6 @@
   }
   .view-report:hover{border-color:var(--honey);color:var(--honey);background:var(--glow);}
 
-  /* ============ BLOCKCHAIN LEDGER ============ */
   .ledger-wrap{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
     padding:32px;overflow:hidden;position:relative;
@@ -448,7 +434,6 @@
   .block-data b{color:var(--text);font-weight:600;}
   .ledger-status{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:0.82rem;color:var(--dim);}
 
-  /* ============ COMPARISON SLIDER ============ */
   .compare-wrap{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
     overflow:hidden;position:relative;user-select:none;
@@ -479,7 +464,6 @@
   .compare-labels{position:absolute;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;z-index:6;pointer-events:none;}
   .compare-labels span{background:rgba(0,0,0,0.6);color:#fff;padding:6px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;backdrop-filter:blur(6px);}
 
-  /* ============ VERIFY ============ */
   .verify-section{
     background:linear-gradient(135deg, var(--glow), transparent 60%);
     border:1px solid var(--border);border-radius:22px;
@@ -573,7 +557,66 @@
   }
   .verify-hash b{color:var(--honey);}
 
-  /* ============ TABS ============ */
+  .scan-btn{
+    margin-top:12px;
+    display:inline-flex;align-items:center;gap:8px;
+    background:transparent;color:var(--text);
+    border:1px solid var(--border-2);
+    padding:12px 20px;border-radius:10px;font-size:0.94rem;font-weight:600;
+    cursor:pointer;min-height:48px;transition:.2s var(--ease);
+  }
+  .scan-btn:hover{border-color:var(--honey);color:var(--honey);background:var(--glow);}
+  .scan-btn:active{transform:scale(.97);}
+
+  .scan-modal{
+    position:fixed;inset:0;z-index:400;
+    display:none;align-items:center;justify-content:center;
+  }
+  .scan-modal.show{display:flex;animation:fadeUp .25s var(--ease);}
+  .scan-modal-backdrop{
+    position:absolute;inset:0;background:rgba(0,0,0,0.72);
+    backdrop-filter:blur(6px);
+  }
+  .scan-modal-body{
+    position:relative;z-index:1;
+    background:var(--card);border:1px solid var(--border-2);
+    border-radius:18px;padding:22px;
+    width:min(480px, calc(100vw - 32px));
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  }
+  .scan-modal-head{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:0.92rem;color:var(--muted);margin-bottom:16px;gap:12px;
+  }
+  .scan-close{
+    background:transparent;border:1px solid var(--border-2);color:var(--muted);
+    width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:1rem;
+    display:flex;align-items:center;justify-content:center;transition:.2s;
+    flex-shrink:0;
+  }
+  .scan-close:hover{color:var(--honey);border-color:var(--honey);}
+  .qr-reader{
+    width:100%;aspect-ratio:1/1;background:#0b0b0b;
+    border-radius:12px;overflow:hidden;border:1px solid var(--border);
+  }
+  .qr-reader video{border-radius:12px;}
+  .scan-modal-foot{
+    margin-top:14px;font-size:0.82rem;color:var(--dim);text-align:center;
+  }
+  .scan-modal-foot.ok{color:var(--green);}
+  .scan-modal-foot.err{color:var(--red);}
+
+  .verify-loading{
+    display:inline-flex;align-items:center;gap:8px;color:var(--muted);
+  }
+  .verify-loading .dot{
+    width:6px;height:6px;border-radius:50%;background:var(--honey);
+    animation:dotBlink 1s ease-in-out infinite;
+  }
+  .verify-loading .dot:nth-child(2){animation-delay:.15s;}
+  .verify-loading .dot:nth-child(3){animation-delay:.3s;}
+  @keyframes dotBlink{0%,100%{opacity:.3;}50%{opacity:1;}}
+
   .stack-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:36px;}
   .tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
   .tab{
@@ -618,7 +661,6 @@
   .stack-visual .layer .txt{font-size:0.86rem;color:var(--text);font-weight:500;}
   .stack-visual .layer .sub{font-size:0.74rem;color:var(--dim);margin-top:2px;}
 
-  /* ============ TESTIMONIALS ============ */
   .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;}
   .test-card{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
@@ -638,7 +680,6 @@
   .test-role{font-size:0.8rem;color:var(--dim);}
   .test-stars{color:var(--honey);font-size:0.85rem;letter-spacing:2px;margin-bottom:12px;}
 
-  /* ============ FAQ ============ */
   .faq-list{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px;}
   .faq-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .25s;}
   .faq-item:hover{border-color:var(--border-2);}
@@ -653,14 +694,12 @@
   .faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
   .faq-a-inner{padding:0 24px 22px;font-size:0.94rem;color:var(--muted);line-height:1.7;}
 
-  /* ============ FOOTER ============ */
   footer{border-top:1px solid var(--border);padding:44px 32px;margin-top:20px;position:relative;z-index:2;}
   .footer-inner{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
   footer .l{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;}
   footer .l .mark{color:var(--honey);}
   footer .r{color:var(--dim);font-size:0.85rem;letter-spacing:0.5px;text-align:right;}
 
-  /* ============ FLOATING BEE ============ */
   .float-bee{
     position:fixed;z-index:90;font-size:1.6rem;pointer-events:none;
     transition:transform .6s var(--ease),opacity .3s;
@@ -669,7 +708,6 @@
   }
   .float-bee.show{opacity:1;}
 
-  /* ============ BACK TO TOP ============ */
   .to-top{
     position:fixed;right:22px;bottom:22px;z-index:150;
     width:46px;height:46px;border-radius:50%;background:var(--card);
@@ -681,7 +719,6 @@
   .to-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
   .to-top:hover{background:var(--honey);color:#111;border-color:var(--honey);}
 
-  /* ============ TOAST ============ */
   #toast{
     position:fixed;bottom:28px;left:50%;transform:translate(-50%,120px);
     background:var(--honey);color:#111;padding:14px 26px;border-radius:12px;
@@ -694,7 +731,6 @@
   #toast.show{transform:translate(-50%,0);opacity:1;}
   #toast.error{background:var(--red);color:#2a0a0a;box-shadow:0 10px 40px rgba(232,138,138,0.3);}
 
-  /* ============ CONFETTI ============ */
   .confetti{
     position:fixed;width:10px;height:10px;pointer-events:none;z-index:300;
     animation:confettiFall 2.5s linear forwards;
@@ -704,7 +740,6 @@
     100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
   }
 
-  /* ============ RESPONSIVE ============ */
   @media(max-width:960px){
     .hero{grid-template-columns:1fr;gap:48px;padding:56px 24px;}
     .hive-visual{margin:0 auto;}
@@ -729,6 +764,7 @@
     .metrics{grid-template-columns:1fr;}
     .verify-form{flex-direction:column;}
     .verify-form button{width:100%;padding:14px;}
+    .scan-btn{width:100%;justify-content:center;}
     .hero-stats{gap:26px;}
     .trust-strip{padding:20px;}
     .trust-inner{flex-direction:column;gap:12px;align-items:flex-start;}
@@ -740,7 +776,6 @@
 </head>
 <body>
 
-<!-- PRELOADER -->
 <div id="preloader">
   <div class="pre-hex">
     <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
@@ -751,18 +786,13 @@
   <div class="pre-brand"><b>✦</b> HONEYCHAIN</div>
 </div>
 
-<!-- CURSOR GLOW -->
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
-
-<!-- SCROLL PROGRESS -->
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-<!-- TICKER -->
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
-<!-- NAV -->
 <nav id="mainNav" aria-label="Main navigation">
   <div class="logo"><span class="mark" aria-hidden="true">✦</span> HoneyChain</div>
   <ul>
@@ -781,7 +811,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <header class="hero">
   <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
   <div class="reveal in">
@@ -866,7 +895,6 @@
   </div>
 </header>
 
-<!-- TRUST STRIP -->
 <div class="trust-strip">
   <div class="trust-inner">
     <span>Made to fight fake honey</span>
@@ -876,7 +904,6 @@
   </div>
 </div>
 
-<!-- HOW IT WORKS -->
 <section id="how">
   <div class="steps-header">
     <div class="reveal">
@@ -916,7 +943,6 @@
   </div>
 </section>
 
-<!-- LIVE HIVE DASHBOARD -->
 <section id="hive">
   <div class="dash-header">
     <div class="reveal">
@@ -1000,7 +1026,6 @@
   </div>
 </section>
 
-<!-- BLOCKCHAIN LEDGER -->
 <section id="ledger">
   <div class="stack-header">
     <div class="reveal">
@@ -1021,7 +1046,6 @@
   </div>
 </section>
 
-<!-- COMPARISON -->
 <section id="compare">
   <div class="stack-header">
     <div class="reveal">
@@ -1066,7 +1090,6 @@
   </div>
 </section>
 
-<!-- VERIFY -->
 <section id="verify">
   <div class="verify-section">
     <div class="verify-top">
@@ -1082,6 +1105,9 @@
           <input type="text" id="batchInput" value="HC-2026-0842" placeholder="Enter batch ID" autocomplete="off"/>
           <button type="submit">Check it →</button>
         </form>
+        <button type="button" class="scan-btn" id="scanBtn">
+          <span aria-hidden="true">📷</span> Scan QR code
+        </button>
         <div class="verify-hint" id="verifyHint" role="status" aria-live="polite">
           Try the sample batch ID above to see a real record.
         </div>
@@ -1128,10 +1154,21 @@
         Digital fingerprint <b id="r-hash">0x8f4c…91ab27</b>
       </div>
     </div>
+
+    <div class="scan-modal" id="scanModal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="scan-modal-backdrop" onclick="closeScanner()"></div>
+      <div class="scan-modal-body">
+        <div class="scan-modal-head">
+          <span>Point your camera at the QR code on the jar</span>
+          <button class="scan-close" onclick="closeScanner()" aria-label="Close scanner">✕</button>
+        </div>
+        <div id="qr-reader" class="qr-reader"></div>
+        <div class="scan-modal-foot" id="scanStatus">Initialising camera…</div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- TECH STACK -->
 <section id="stack">
   <div class="stack-header">
     <div class="reveal">
@@ -1213,7 +1250,6 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
 <section id="voices">
   <div class="stack-header">
     <div class="reveal">
@@ -1261,7 +1297,6 @@
   </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq">
   <div class="stack-header">
     <div class="reveal">
@@ -1292,7 +1327,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="l"><span class="mark" aria-hidden="true">✦</span> HoneyChain</div>
@@ -1303,13 +1337,13 @@
   </div>
 </footer>
 
-<!-- FLOATING BEE -->
 <div class="float-bee" id="floatBee" aria-hidden="true">🐝</div>
 
-<!-- BACK TO TOP -->
 <button class="to-top" id="toTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <div id="toast" role="status" aria-live="polite">✓ Verified</div>
+
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
 <script>
 /* ============================================================
@@ -1817,14 +1851,195 @@ setInterval(addBlock, 3800);
 })();
 
 /* ============================================================
-   VERIFY BATCH
+   VERIFY BATCH — STATIC JSON LOOKUP
    ============================================================ */
-const batches = {
-  'HC-2026-0842': { keeper:'Ravi Kumar',   loc:'Mandya, Karnataka', date:'08 Sep 2026', health:'94.8% · Healthy' },
-  'HC-2026-0417': { keeper:'Ramesh Patel', loc:'Kutch, Gujarat',    date:'17 Apr 2026', health:'92.1% · Healthy' },
-  'HC-2026-0523': { keeper:'Sunita Devi',  loc:'Sundarbans, WB',    date:'23 May 2026', health:'88.4% · Healthy' }
-};
 
+let __batchesCache = null;
+
+async function loadBatches() {
+  if (__batchesCache) return __batchesCache;
+  const res = await fetch('data/batches.json', { cache: 'force-cache' });
+  if (!res.ok) throw new Error('Could not load batch data');
+  __batchesCache = await res.json();
+  return __batchesCache;
+}
+
+let lastScanned = { id: '', at: 0 };
+function shouldIgnoreScan(id) {
+  const now = Date.now();
+  if (id === lastScanned.id && now - lastScanned.at < 2500) return true;
+  lastScanned = { id, at: now };
+  return false;
+}
+
+function extractBatchId(input) {
+  if (!input) return '';
+  const s = String(input).trim();
+  try {
+    const u = new URL(s);
+    const q = u.searchParams.get('batch');
+    if (q) return q.trim().toUpperCase();
+    const parts = u.pathname.split('/').filter(Boolean);
+    if (parts.length) return parts[parts.length - 1].trim().toUpperCase();
+  } catch { /* not a URL */ }
+  return s.toUpperCase();
+}
+
+function prettyEvent(type) {
+  return ({
+    harvested: 'Harvested',
+    extracted_and_tested: 'Extracted and quality-checked',
+    packaged: 'Packaged and sealed',
+    shipped: 'Shipped'
+  })[type] || String(type || '').replace(/_/g, ' ');
+}
+
+function renderVerifyResult(d) {
+  document.getElementById('r-id').textContent     = d.batchId;
+  document.getElementById('r-keeper').textContent = d.beekeeper;
+  document.getElementById('r-loc').textContent    = d.location;
+  document.getElementById('r-date').textContent   = d.harvestDate;
+  document.getElementById('r-health').textContent = `${d.healthAtHarvest}% · ${d.healthLabel}`;
+  document.getElementById('r-hash').textContent   = d.onchainHash;
+
+  const tl = document.querySelector('.tl-list');
+  tl.innerHTML = (d.events || []).slice(0, 4).map(e =>
+    `<div class="tl">${prettyEvent(e.type)} · ${e.date}${e.location ? ' · ' + e.location : ''}</div>`
+  ).join('');
+
+  const result = document.getElementById('verifyResult');
+  result.classList.remove('show');
+  void result.offsetWidth;
+  result.classList.add('show');
+  result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+async function verifyBatch(rawId) {
+  const input  = document.getElementById('batchInput');
+  const hint   = document.getElementById('verifyHint');
+  const qr     = document.getElementById('qrBox');
+  const result = document.getElementById('verifyResult');
+
+  const id = extractBatchId(rawId ?? input.value);
+  if (!id) return;
+
+  input.value = id;
+  qr.classList.add('scanning');
+  setTimeout(() => qr.classList.remove('scanning'), 800);
+
+  hint.innerHTML = `<span class="verify-loading">
+    <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    &nbsp;Looking up batch ${id}…
+  </span>`;
+  hint.style.color = '';
+
+  try {
+    const batches = await loadBatches();
+    const data = batches[id];
+
+    if (!data) {
+      hint.textContent = `✗ We couldn't find batch ${id}. Try HC-2026-0842`;
+      hint.style.color = 'var(--red)';
+      result.classList.remove('show');
+      showToast('Batch not found', true);
+      return;
+    }
+
+    hint.textContent = '✓ This batch is registered and authentic.';
+    hint.style.color = '';
+    renderVerifyResult(data);
+    showToast('✓ Batch ' + id + ' verified');
+    launchConfetti();
+  } catch (err) {
+    console.error(err);
+    hint.textContent = '✗ Could not load batch data. Please try again.';
+    hint.style.color = 'var(--red)';
+    showToast('Load error', true);
+  }
+}
+
+/* ---------- QR SCANNER ---------- */
+let html5Qr = null;
+
+async function openScanner() {
+  const modal = document.getElementById('scanModal');
+  const status = document.getElementById('scanStatus');
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  status.textContent = 'Initialising camera…';
+  status.className = 'scan-modal-foot';
+
+  if (!window.Html5Qrcode) {
+    status.textContent = '✗ Scanner library failed to load. Check your connection.';
+    status.className = 'scan-modal-foot err';
+    return;
+  }
+
+  try {
+    html5Qr = new Html5Qrcode('qr-reader', { verbose: false });
+    const config = { fps: 10, qrbox: { width: 240, height: 240 } };
+
+    await html5Qr.start(
+      { facingMode: 'environment' },
+      config,
+      (decodedText) => {
+        const id = extractBatchId(decodedText);
+        if (!id) return;
+        if (shouldIgnoreScan(id)) return;
+        status.textContent = `✓ Detected: ${id}`;
+        status.className = 'scan-modal-foot ok';
+        setTimeout(async () => {
+          await closeScanner();
+          verifyBatch(id);
+        }, 350);
+      },
+      () => { /* per-frame decode errors are normal; ignore */ }
+    );
+
+    status.textContent = 'Align the QR code inside the box.';
+  } catch (err) {
+    console.error(err);
+    status.textContent = '✗ Camera unavailable. Use the manual field instead.';
+    status.className = 'scan-modal-foot err';
+  }
+}
+
+async function closeScanner() {
+  const modal = document.getElementById('scanModal');
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  if (html5Qr) {
+    try { await html5Qr.stop(); await html5Qr.clear(); } catch {}
+    html5Qr = null;
+  }
+}
+
+document.getElementById('scanBtn').addEventListener('click', openScanner);
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && document.getElementById('scanModal').classList.contains('show')) {
+    closeScanner();
+  }
+});
+
+/* ---------- Sample chips ---------- */
+(function buildChips(){
+  const wrap = document.getElementById('sampleChips');
+  const ids = ['HC-2026-0842', 'HC-2026-0417', 'HC-2026-0523'];
+  ids.forEach(id => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.textContent = id;
+    b.onclick = () => {
+      document.getElementById('batchInput').value = id;
+      verifyBatch(id);
+    };
+    wrap.appendChild(b);
+  });
+})();
+
+/* ---------- Decorative QR visual ---------- */
 (function buildQR(){
   const qr = document.getElementById('qrBox');
   const pattern = [
@@ -1839,57 +2054,15 @@ const batches = {
   qr.innerHTML = pattern.map(p => p ? '<span></span>' : '<span class="empty"></span>').join('');
 })();
 
-(function buildChips(){
-  const wrap = document.getElementById('sampleChips');
-  Object.keys(batches).forEach(id => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'chip';
-    b.textContent = id;
-    b.onclick = () => {
-      document.getElementById('batchInput').value = id;
-      verifyBatch();
-    };
-    wrap.appendChild(b);
-  });
-})();
-
-function verifyBatch(){
-  const id = document.getElementById('batchInput').value.trim().toUpperCase();
-  const data = batches[id];
-  const result = document.getElementById('verifyResult');
-  const hint = document.getElementById('verifyHint');
-  const qr = document.getElementById('qrBox');
-
-  qr.classList.add('scanning');
-  setTimeout(() => qr.classList.remove('scanning'), 800);
-
-  if (!data){
-    hint.textContent = '✗ We couldn\'t find that batch. Try the sample: HC-2026-0842';
-    hint.style.color = 'var(--red)';
-    result.classList.remove('show');
-    showToast('Batch not found', true);
-    return;
+/* ---------- Deep-link ?batch=... ---------- */
+(function checkDeepLink(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('batch');
+  if (id) {
+    document.getElementById('batchInput').value = id;
+    setTimeout(() => verifyBatch(id), 500);
   }
-  hint.textContent = '✓ This batch is registered and authentic.';
-  hint.style.color = '';
-
-  document.getElementById('r-id').textContent = id;
-  document.getElementById('r-keeper').textContent = data.keeper;
-  document.getElementById('r-loc').textContent = data.loc;
-  document.getElementById('r-date').textContent = data.date;
-  document.getElementById('r-health').textContent = data.health;
-  document.getElementById('r-hash').textContent =
-    '0x' + Array.from({length:12}, () => Math.floor(Math.random()*16).toString(16)).join('') +
-    '…' + Array.from({length:6}, () => Math.floor(Math.random()*16).toString(16)).join('');
-
-  result.classList.remove('show');
-  void result.offsetWidth;
-  result.classList.add('show');
-  result.scrollIntoView({ behavior:'smooth', block:'center' });
-  showToast('✓ Batch ' + id + ' verified');
-  launchConfetti();
-}
+})();
 
 /* ============================================================
    CONFETTI
