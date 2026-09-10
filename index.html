@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HoneyChain — Know the story behind every drop</title>
+<style>
+  :root{
+    --honey:#f5b942;
+    --honey-soft:#ffd580;
+    --honey-deep:#c08a1e;
+    --green:#7dd87d;
+    --red:#e88a8a;
+    --blue:#7db8e8;
+    --radius:14px;
+    --maxw:1200px;
+    --ease:cubic-bezier(.22,1,.36,1);
+    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  [data-theme="dark"]{
+    --bg:#0b0b0b;
+    --bg-2:#141414;
+    --card:#161616;
+    --card-2:#1c1c1c;
+    --border:#2a2a2a;
+    --border-2:#3a3a3a;
+    --text:#f2f2f2;
+    --muted:#b8b8b8;
+    --dim:#909090;
+    --glow:rgba(245,185,66,0.08);
+    --shadow:rgba(0,0,0,0.5);
+  }
+  [data-theme="light"]{
+    --bg:#faf7f0;
+    --bg-2:#ffffff;
+    --card:#ffffff;
+    --card-2:#fffdf8;
+    --border:#e6dfd0;
+    --border-2:#d4c9b3;
+    --text:#1a1a1a;
+    --muted:#5a5a5a;
+    --dim:#8a8a8a;
+    --glow:rgba(245,185,66,0.15);
+    --shadow:rgba(0,0,0,0.08);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{font-size:17px;scroll-behavior:smooth;}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    transition:background .4s var(--ease),color .4s var(--ease);
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(900px 500px at 15% -5%, var(--glow), transparent 60%),
+      radial-gradient(800px 500px at 95% 10%, var(--glow), transparent 60%);
+    transition:background .4s var(--ease);
+  }
+  a{color:inherit;text-decoration:none;}
+  button,input{font-family:inherit;font-size:1rem;}
+  img,svg{display:block;max-width:100%;}
+  ::selection{background:var(--honey);color:#111;}
+
+  :focus-visible{outline:2px solid var(--honey);outline-offset:3px;border-radius:6px;}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ============ PRELOADER ============ */
+  #preloader{
+    position:fixed;inset:0;z-index:9999;
+    background:var(--bg);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+    transition:opacity .6s var(--ease),visibility .6s var(--ease);
+  }
+  #preloader.done{opacity:0;visibility:hidden;}
+  .pre-hex{
+    position:relative;width:80px;height:80px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .pre-hex svg{
+    width:100%;height:100%;
+    animation:preSpin 2s linear infinite;
+  }
+  .pre-hex svg polygon{
+    fill:none;stroke:var(--honey);stroke-width:1.5;
+    stroke-dasharray:200;stroke-dashoffset:200;
+    animation:drawHex 2s ease-in-out infinite;
+  }
+  @keyframes drawHex{0%{stroke-dashoffset:200;}50%{stroke-dashoffset:0;}100%{stroke-dashoffset:-200;}}
+  @keyframes preSpin{to{transform:rotate(360deg);}}
+  .pre-brand{
+    font-size:0.85rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:600;
+  }
+  .pre-brand b{color:var(--honey);}
+
+  /* ============ CURSOR GLOW ============ */
+  .cursor-glow{
+    position:fixed;top:0;left:0;width:420px;height:420px;
+    border-radius:50%;pointer-events:none;z-index:1;
+    background:radial-gradient(circle, var(--glow), transparent 65%);
+    transform:translate(-50%,-50%);
+    transition:opacity .3s;
+    opacity:0;
+    will-change:transform;
+  }
+  @media (hover:hover) and (pointer:fine){ .cursor-glow{opacity:1;} }
+
+  /* ============ SCROLL PROGRESS ============ */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:3px;width:0%;
+    background:linear-gradient(90deg,var(--honey),var(--honey-soft));
+    z-index:200;transition:width .1s linear;
+    box-shadow:0 0 12px var(--honey);
+  }
+
+  /* ============ TICKER ============ */
+  .ticker{
+    background:var(--bg-2);border-bottom:1px solid var(--border);
+    padding:8px 0;overflow:hidden;position:relative;z-index:50;
+    font-size:0.78rem;color:var(--muted);
+  }
+  .ticker-track{
+    display:flex;gap:56px;white-space:nowrap;
+    animation:scrollTicker 40s linear infinite;
+    padding-left:20px;
+  }
+  @keyframes scrollTicker{to{transform:translateX(-50%);}}
+  .ticker-item{display:inline-flex;align-items:center;gap:8px;}
+  .ticker-item .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);}
+  .ticker-item b{color:var(--text);font-weight:600;}
+  .ticker-item .pos{color:var(--green);}
+
+  /* ============ NAV ============ */
+  nav{
+    position:sticky;top:0;z-index:100;
+    background:color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+    padding:16px 32px;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:20px;transition:padding .3s var(--ease),background .4s;
+  }
+  nav.shrink{padding:10px 32px;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;letter-spacing:-0.2px;}
+  .logo .mark{
+    color:var(--honey);font-size:1.25rem;display:inline-block;
+    animation:spinSlow 14s linear infinite;
+  }
+  @keyframes spinSlow{to{transform:rotate(360deg);}}
+  nav ul{display:flex;gap:28px;list-style:none;}
+  nav ul a{
+    color:var(--muted);font-size:0.93rem;font-weight:500;
+    transition:color .2s;padding:6px 0;position:relative;
+  }
+  nav ul a::after{
+    content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;
+    background:var(--honey);transition:width .3s var(--ease);
+  }
+  nav ul a:hover{color:var(--honey);}
+  nav ul a:hover::after,nav ul a.active::after{width:100%;}
+  nav ul a.active{color:var(--honey);}
+  .nav-right{display:flex;align-items:center;gap:10px;}
+  .icon-btn{
+    width:42px;height:42px;border-radius:10px;
+    background:transparent;border:1px solid var(--border-2);
+    color:var(--muted);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:.2s;font-size:1.05rem;
+  }
+  .icon-btn:hover{color:var(--honey);border-color:var(--honey);transform:translateY(-1px);}
+  .icon-btn.active{color:var(--honey);border-color:var(--honey);background:var(--glow);}
+  .nav-cta{
+    background:var(--honey);color:#111;font-weight:600;font-size:0.92rem;
+    padding:11px 20px;border-radius:10px;border:none;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .2s var(--ease),background .2s;min-height:44px;
+  }
+  .nav-cta:hover{background:var(--honey-soft);transform:translateY(-1px);}
+
+  /* ============ HERO ============ */
+  .hero{
+    padding:80px 32px 70px;max-width:var(--maxw);margin:0 auto;
+    display:grid;grid-template-columns:1.1fr 0.9fr;gap:70px;align-items:center;
+    position:relative;z-index:2;
+  }
+  .hero-bg{
+    position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0;
+  }
+  .float-hex{
+    position:absolute;color:var(--honey);opacity:0.14;
+    font-size:1.2rem;
+    animation:floatHex linear infinite;
+  }
+  @keyframes floatHex{
+    0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
+    10%{opacity:0.18;}
+    90%{opacity:0.18;}
+    100%{transform:translateY(-10vh) rotate(360deg);opacity:0;}
+  }
+  .eyebrow{
+    color:var(--honey);font-size:0.8rem;font-weight:700;
+    letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"●";color:var(--honey);font-size:0.7rem;animation:pulseDot 1.8s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+  .hero h1{
+    font-size:clamp(2.1rem,4.4vw,3.4rem);font-weight:800;line-height:1.08;
+    letter-spacing:-1px;margin-bottom:24px;
+  }
+  .hero h1 .accent{
+    color:var(--honey);
+    background:linear-gradient(90deg,var(--honey),var(--honey-soft),var(--honey));
+    background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite;
+  }
+  @keyframes shimmer{0%{background-position:0% 50%;}100%{background-position:200% 50%;}}
+  .hero p.lead{color:var(--muted);font-size:1.08rem;line-height:1.7;max-width:520px;margin-bottom:34px;}
+  .hero-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:48px;}
+  .btn-primary,.btn-ghost{
+    font-weight:600;font-size:0.98rem;padding:14px 26px;border-radius:10px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;min-height:48px;
+    transition:.25s var(--ease);position:relative;overflow:hidden;
+  }
+  .btn-primary{background:var(--honey);color:#111;border:none;box-shadow:0 8px 30px var(--glow);}
+  .btn-primary:hover{background:var(--honey-soft);transform:translateY(-2px);box-shadow:0 12px 36px rgba(245,185,66,0.4);}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border-2);}
+  .btn-ghost:hover{border-color:var(--honey);color:var(--honey);transform:translateY(-2px);}
+  .btn-primary .ripple{
+    position:absolute;border-radius:50%;background:rgba(255,255,255,0.5);
+    transform:scale(0);animation:ripple .6s var(--ease);pointer-events:none;
+  }
+  @keyframes ripple{to{transform:scale(4);opacity:0;}}
+
+  .hero-stats{display:flex;gap:40px;flex-wrap:wrap;}
+  .stat .num{
+    font-size:1.55rem;font-weight:800;color:var(--honey);
+    letter-spacing:-0.5px;line-height:1.2;font-variant-numeric:tabular-nums;
+  }
+  .stat .lbl{font-size:0.8rem;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+
+  /* HIVE VISUAL */
+  .hive-visual{
+    position:relative;background:var(--card);border:1px solid var(--border);
+    border-radius:18px;padding:24px;aspect-ratio:1/1;max-width:480px;margin-left:auto;
+    overflow:hidden;transition:transform .5s var(--ease),background .4s;
+  }
+  .hive-visual::after{
+    content:"";position:absolute;inset:-1px;border-radius:18px;
+    background:radial-gradient(400px 400px at 50% 30%, var(--glow), transparent 60%);
+    pointer-events:none;
+  }
+  .hive-header{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:0.78rem;color:var(--dim);letter-spacing:1.5px;font-weight:600;
+  }
+  .hive-header .status-dot{color:var(--honey);display:inline-flex;align-items:center;gap:7px;}
+  .hive-header .status-dot::before{
+    content:"";width:7px;height:7px;border-radius:50%;background:var(--honey);
+    box-shadow:0 0 0 0 rgba(245,185,66,0.7);animation:pulseRing 2s infinite;
+  }
+  @keyframes pulseRing{
+    0%{box-shadow:0 0 0 0 rgba(245,185,66,0.6);}
+    70%{box-shadow:0 0 0 10px rgba(245,185,66,0);}
+    100%{box-shadow:0 0 0 0 rgba(245,185,66,0);}
+  }
+  .hive-svg{width:100%;height:calc(100% - 34px);cursor:pointer;}
+  .hex-glow{animation:hexPulse 3.5s ease-in-out infinite;transform-origin:center;}
+  @keyframes hexPulse{0%,100%{opacity:.85;stroke-width:1.8;}50%{opacity:1;stroke-width:2.6;}}
+  .bee-group{animation:beeFloat 4s ease-in-out infinite;transform-origin:center;}
+  @keyframes beeFloat{0%,100%{transform:translate(210px,185px);}50%{transform:translate(214px,180px);}}
+  .conn-line{stroke-dasharray:6 8;animation:dash 2.5s linear infinite;}
+  @keyframes dash{to{stroke-dashoffset:-56;}}
+  .node-dot{animation:nodePulse 2.2s ease-in-out infinite;transform-origin:center;}
+  .node-dot:nth-child(2){animation-delay:.4s;}
+  .node-dot:nth-child(3){animation-delay:.8s;}
+  .node-dot:nth-child(4){animation-delay:1.2s;}
+  @keyframes nodePulse{0%,100%{opacity:.7;r:3.5;}50%{opacity:1;r:4.5;}}
+  .hive-badge{
+    position:absolute;background:var(--card-2);border:1px solid var(--border-2);
+    border-radius:10px;padding:9px 14px;font-size:0.9rem;font-weight:600;
+    display:flex;align-items:center;gap:8px;backdrop-filter:blur(6px);
+    white-space:nowrap;animation:badgeFloat 5s ease-in-out infinite;
+  }
+  .hive-badge.temp{top:66px;right:22px;color:var(--honey);}
+  .hive-badge.hum{top:50%;left:22px;color:var(--text);animation-delay:.8s;}
+  .hive-badge.wt{bottom:76px;right:22px;color:var(--honey);animation-delay:1.6s;}
+  @keyframes badgeFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-3px);}}
+  .hive-badge .ico{font-size:0.95rem;}
+  .hive-footer{
+    position:absolute;bottom:24px;left:24px;right:24px;
+    display:flex;justify-content:space-between;
+    font-size:0.75rem;color:var(--dim);letter-spacing:1.5px;font-weight:600;
+  }
+
+  /* ============ TRUST STRIP ============ */
+  .trust-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-2);padding:22px 32px;overflow:hidden;transition:background .4s;}
+  .trust-inner{
+    max-width:var(--maxw);margin:0 auto;display:flex;justify-content:center;
+    gap:44px;flex-wrap:wrap;font-size:0.95rem;color:var(--muted);
+  }
+  .trust-inner span{display:flex;align-items:center;gap:10px;transition:color .2s;}
+  .trust-inner span::before{content:"✓";color:var(--honey);font-weight:700;}
+  .trust-inner span:hover{color:var(--text);}
+
+  /* ============ SECTION BASE ============ */
+  section{padding:88px 32px;max-width:var(--maxw);margin:0 auto;position:relative;z-index:2;}
+  .section-eyebrow{color:var(--honey);font-size:0.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
+  .section-title{font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:800;line-height:1.15;letter-spacing:-0.5px;margin-bottom:16px;}
+  .section-title .accent{color:var(--honey);}
+  .section-lead{color:var(--muted);font-size:1.02rem;line-height:1.7;max-width:520px;}
+
+  /* ============ REVEAL ============ */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  .reveal.d1{transition-delay:.06s;}
+  .reveal.d2{transition-delay:.12s;}
+  .reveal.d3{transition-delay:.18s;}
+  .reveal.d4{transition-delay:.24s;}
+
+  /* ============ STEP CARDS ============ */
+  .steps-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:52px;}
+  .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .step-card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:28px 24px;transition:.35s var(--ease);position:relative;overflow:hidden;
+  }
+  .step-card::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(300px 200px at var(--mx,50%) var(--my,0%), var(--glow), transparent 60%);
+    opacity:0;transition:opacity .3s;pointer-events:none;
+  }
+  .step-card:hover{border-color:var(--honey);background:var(--card-2);transform:translateY(-4px);}
+  .step-card:hover::before{opacity:1;}
+  .step-num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;border-radius:9px;
+    background:rgba(245,185,66,0.14);color:var(--honey);
+    font-size:0.9rem;font-weight:800;margin-bottom:18px;transition:.3s var(--ease);
+  }
+  .step-card:hover .step-num{background:var(--honey);color:#111;transform:scale(1.08) rotate(-4deg);}
+  .step-card h3{font-size:1.1rem;font-weight:700;margin-bottom:10px;color:var(--text);letter-spacing:-0.2px;}
+  .step-card p{font-size:0.94rem;color:var(--muted);line-height:1.6;}
+  .step-card .tech-note{margin-top:16px;padding-top:14px;border-top:1px dashed var(--border);font-size:0.8rem;color:var(--dim);line-height:1.55;}
+
+  /* ============ DASHBOARD ============ */
+  .dash-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:44px;}
+  .dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;transition:background .4s;}
+  .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:16px;flex-wrap:wrap;}
+  .panel-head .title{display:flex;align-items:center;gap:10px;font-size:0.98rem;color:var(--text);font-weight:600;}
+  .panel-head .title::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--honey);flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
+  .live-tag{font-size:0.72rem;font-weight:700;letter-spacing:1.2px;color:var(--green);display:inline-flex;align-items:center;gap:6px;}
+  .live-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulseRing 2s infinite;}
+  .refresh-btn{
+    background:transparent;border:1px solid var(--border-2);color:var(--muted);
+    font-size:0.86rem;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+    padding:8px 14px;border-radius:8px;min-height:40px;transition:.2s;
+  }
+  .refresh-btn:hover{color:var(--honey);border-color:var(--honey);}
+  .refresh-btn.spin .ico{animation:spin .8s linear;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px;}
+  .metric{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:18px;transition:.3s var(--ease);}
+  .metric:hover{border-color:var(--border-2);transform:translateY(-2px);}
+  .metric .lbl{font-size:0.78rem;color:var(--dim);letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+  .metric .val{
+    font-size:1.7rem;font-weight:800;color:var(--honey);
+    margin:8px 0 4px;letter-spacing:-0.5px;line-height:1.1;
+    font-variant-numeric:tabular-nums;transition:color .3s;
+  }
+  .metric .val.flash{color:var(--honey-soft);}
+  .metric .delta{font-size:0.82rem;color:var(--green);}
+  .sparkline{width:100%;height:22px;margin-top:6px;}
+
+  .chart-label{font-size:0.86rem;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:14px;font-weight:500;}
+  .line-chart{position:relative;width:100%;height:180px;}
+  .line-chart svg{width:100%;height:100%;overflow:visible;}
+  .chart-path{
+    fill:none;stroke:var(--honey);stroke-width:2.5;
+    stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:1000;stroke-dashoffset:1000;
+    animation:drawLine 2s var(--ease) forwards;
+  }
+  @keyframes drawLine{to{stroke-dashoffset:0;}}
+  .chart-area{fill:url(#chartGrad);opacity:0;animation:fadeIn .8s var(--ease) .8s forwards;}
+  @keyframes fadeIn{to{opacity:.25;}}
+  .chart-dot{fill:var(--honey);stroke:var(--bg);stroke-width:2;cursor:pointer;transition:r .2s;}
+  .chart-dot:hover{r:6;}
+  .chart-dot-label{
+    position:absolute;background:var(--honey);color:#111;
+    font-size:0.7rem;font-weight:700;padding:3px 7px;border-radius:5px;
+    opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap;
+    transform:translate(-50%,-130%);
+  }
+  .chart-dot:hover + .chart-dot-label,.chart-dot.active + .chart-dot-label{opacity:1;}
+
+  .insights{display:flex;flex-direction:column;gap:14px;}
+  .insight{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:16px;
+    display:flex;gap:14px;align-items:flex-start;transition:.3s var(--ease);
+  }
+  .insight:hover{border-color:var(--border-2);transform:translateX(3px);}
+  .insight .ico{
+    width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:0.85rem;flex-shrink:0;background:rgba(245,185,66,0.15);color:var(--honey);
+  }
+  .insight .body{font-size:0.9rem;color:var(--muted);line-height:1.55;flex:1;}
+  .insight .body b{display:block;color:var(--text);font-weight:600;margin-bottom:3px;font-size:0.95rem;}
+  .wave{display:inline-flex;align-items:center;gap:2px;height:14px;vertical-align:middle;margin-left:6px;}
+  .wave span{width:2px;height:4px;background:var(--honey);border-radius:2px;animation:wave 1.1s ease-in-out infinite;}
+  .wave span:nth-child(2){animation-delay:.1s;}
+  .wave span:nth-child(3){animation-delay:.2s;}
+  .wave span:nth-child(4){animation-delay:.3s;}
+  .wave span:nth-child(5){animation-delay:.4s;}
+  @keyframes wave{0%,100%{height:4px;}50%{height:14px;}}
+  .view-report{
+    margin-top:auto;background:transparent;border:1px solid var(--border-2);color:var(--text);
+    padding:12px;border-radius:10px;font-size:0.92rem;font-weight:600;cursor:pointer;
+    text-align:center;min-height:46px;transition:.2s;
+  }
+  .view-report:hover{border-color:var(--honey);color:var(--honey);background:var(--glow);}
+
+  /* ============ MAP ============ */
+  .map-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:44px;}
+  .map-wrap{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:32px;position:relative;overflow:hidden;
+  }
+  .map-svg{width:100%;height:auto;max-height:520px;display:block;margin:0 auto;}
+  .map-country{fill:var(--bg-2);stroke:var(--border-2);stroke-width:1;transition:.3s;}
+  .pin{fill:var(--honey);cursor:pointer;transition:r .2s,filter .2s;}
+  .pin-pulse{fill:var(--honey);opacity:0.4;animation:pinPulse 2s ease-out infinite;}
+  @keyframes pinPulse{0%{r:6;opacity:.6;}100%{r:20;opacity:0;}}
+  .pin:hover{filter:drop-shadow(0 0 8px var(--honey));}
+  .pin-tooltip{
+    position:absolute;background:var(--card-2);border:1px solid var(--honey);
+    border-radius:10px;padding:12px 14px;font-size:0.82rem;
+    pointer-events:none;opacity:0;transition:opacity .2s;
+    box-shadow:0 8px 30px var(--shadow);z-index:10;min-width:180px;
+  }
+  .pin-tooltip.show{opacity:1;}
+  .pin-tooltip .name{font-weight:700;color:var(--text);margin-bottom:4px;font-size:0.9rem;}
+  .pin-tooltip .loc{color:var(--dim);font-size:0.78rem;margin-bottom:6px;}
+  .pin-tooltip .stat{display:flex;justify-content:space-between;color:var(--muted);font-size:0.78rem;padding:2px 0;}
+  .pin-tooltip .stat b{color:var(--honey);font-weight:600;}
+
+  /* ============ BLOCKCHAIN LEDGER ============ */
+  .ledger-wrap{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:32px;overflow:hidden;position:relative;
+  }
+  .ledger-scroll{display:flex;gap:14px;overflow-x:auto;padding:8px 4px 20px;scroll-behavior:smooth;}
+  .ledger-scroll::-webkit-scrollbar{height:6px;}
+  .ledger-scroll::-webkit-scrollbar-track{background:var(--bg-2);border-radius:3px;}
+  .ledger-scroll::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:3px;}
+  .block{
+    flex-shrink:0;width:200px;background:var(--bg-2);border:1px solid var(--border-2);
+    border-radius:12px;padding:16px;position:relative;transition:.3s var(--ease);
+  }
+  .block:hover{border-color:var(--honey);transform:translateY(-3px);}
+  .block.new{animation:blockIn .6s var(--ease);}
+  @keyframes blockIn{
+    from{opacity:0;transform:translateX(-30px) scale(.9);}
+    to{opacity:1;transform:translateX(0) scale(1);}
+  }
+  .block::after{
+    content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);
+    color:var(--border-2);font-size:1rem;
+  }
+  .block:last-child::after{display:none;}
+  .block-num{font-size:0.68rem;color:var(--dim);letter-spacing:1px;font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+  .block-num .badge{background:var(--honey);color:#111;padding:1px 6px;border-radius:4px;font-size:0.62rem;font-weight:700;}
+  .block-hash{font-family:ui-monospace,monospace;font-size:0.75rem;color:var(--honey);word-break:break-all;margin-bottom:8px;}
+  .block-data{font-size:0.78rem;color:var(--muted);line-height:1.5;}
+  .block-data b{color:var(--text);font-weight:600;}
+  .ledger-status{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:0.82rem;color:var(--dim);}
+
+  /* ============ COMPARISON SLIDER ============ */
+  .compare-wrap{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;position:relative;user-select:none;
+    aspect-ratio:16/9;max-height:500px;
+  }
+  .compare-side{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:40px;}
+  .compare-side h3{font-size:1.4rem;font-weight:800;margin-bottom:10px;}
+  .compare-side p{font-size:0.94rem;max-width:320px;line-height:1.6;}
+  .compare-side ul{list-style:none;margin-top:16px;}
+  .compare-side li{font-size:0.88rem;padding:5px 0;display:flex;gap:10px;align-items:center;}
+  .compare-fake{background:linear-gradient(135deg,#2a1a1a,#1a1010);color:#f0d5d5;}
+  [data-theme="light"] .compare-fake{background:linear-gradient(135deg,#fde8e8,#fce4e4);color:#5a2020;}
+  .compare-fake li::before{content:"✗";color:var(--red);font-weight:700;}
+  .compare-real{background:linear-gradient(135deg,#1a2a1a,#101a10);color:#d5f0d5;clip-path:inset(0 50% 0 0);}
+  [data-theme="light"] .compare-real{background:linear-gradient(135deg,#e8fde8,#e4fce4);color:#205a20;}
+  .compare-real li::before{content:"✓";color:var(--green);font-weight:700;}
+  .compare-handle{
+    position:absolute;top:0;bottom:0;width:4px;background:var(--honey);
+    left:50%;transform:translateX(-50%);cursor:ew-resize;z-index:5;
+    box-shadow:0 0 20px var(--honey);
+  }
+  .compare-handle::after{
+    content:"⇔";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:46px;height:46px;border-radius:50%;background:var(--honey);color:#111;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;
+    box-shadow:0 6px 20px rgba(245,185,66,0.4);
+  }
+  .compare-labels{position:absolute;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;z-index:6;pointer-events:none;}
+  .compare-labels span{background:rgba(0,0,0,0.6);color:#fff;padding:6px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;backdrop-filter:blur(6px);}
+
+  /* ============ VERIFY ============ */
+  .verify-section{
+    background:linear-gradient(135deg, var(--glow), transparent 60%);
+    border:1px solid var(--border);border-radius:22px;
+    padding:56px;position:relative;overflow:hidden;transition:background .4s;
+  }
+  .verify-section::before{
+    content:"";position:absolute;top:-100px;right:-100px;
+    width:400px;height:400px;border-radius:50%;
+    background:radial-gradient(circle, var(--glow), transparent 70%);
+    pointer-events:none;
+  }
+  .verify-top{display:grid;grid-template-columns:1.1fr 0.9fr;gap:60px;align-items:center;margin-bottom:36px;position:relative;z-index:1;}
+  .verify-top h2{font-size:clamp(1.7rem,3.2vw,2.4rem);font-weight:800;line-height:1.15;margin-bottom:18px;letter-spacing:-0.5px;}
+  .verify-top h2 .accent{color:var(--honey);}
+  .verify-top p{color:var(--muted);font-size:1.02rem;line-height:1.7;max-width:480px;margin-bottom:26px;}
+  .verify-form{display:flex;gap:10px;max-width:480px;}
+  .verify-form input{
+    flex:1;background:var(--bg);border:1px solid var(--border-2);color:var(--text);
+    padding:14px 16px;border-radius:10px;font-size:1rem;min-height:50px;
+    transition:border-color .2s,box-shadow .2s;
+  }
+  .verify-form input:focus{outline:none;border-color:var(--honey);box-shadow:0 0 0 4px rgba(245,185,66,0.12);}
+  .verify-form button{
+    background:var(--honey);color:#111;border:none;padding:0 24px;border-radius:10px;
+    font-weight:700;cursor:pointer;font-size:0.98rem;min-height:50px;
+    transition:.2s;white-space:nowrap;
+  }
+  .verify-form button:hover{background:var(--honey-soft);}
+  .verify-form button:active{transform:scale(.97);}
+  .verify-hint{margin-top:14px;font-size:0.88rem;color:var(--dim);transition:color .2s;}
+  .sample-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+  .chip{
+    background:transparent;border:1px solid var(--border-2);color:var(--muted);
+    padding:6px 12px;border-radius:20px;font-size:0.78rem;cursor:pointer;
+    transition:.2s;font-family:ui-monospace,monospace;
+  }
+  .chip:hover{border-color:var(--honey);color:var(--honey);background:var(--glow);}
+  .verify-sample{text-align:right;}
+  .verify-sample .code{
+    font-size:1.5rem;font-weight:800;color:var(--honey);letter-spacing:-0.5px;
+    display:inline-flex;align-items:center;gap:12px;
+  }
+  .verify-sample .cap{font-size:0.82rem;color:var(--dim);letter-spacing:1.2px;margin-top:4px;}
+  .qr{
+    width:64px;height:64px;display:grid;grid-template-columns:repeat(7,1fr);gap:2px;
+    background:var(--bg);padding:6px;border-radius:8px;border:1px solid var(--border-2);flex-shrink:0;
+    transition:.3s;
+  }
+  .qr.scanning{box-shadow:0 0 20px var(--honey);border-color:var(--honey);}
+  .qr span{background:var(--honey);border-radius:1px;}
+  .qr span.empty{background:transparent;}
+
+  .verify-result{
+    background:var(--bg);border:1px solid var(--border-2);border-radius:16px;
+    padding:32px;display:none;position:relative;z-index:1;
+  }
+  .verify-result.show{display:block;animation:fadeUp .45s var(--ease);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+  .verified-tag{
+    display:inline-flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--green);
+    font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px;
+    opacity:0;animation:fadeUp .5s var(--ease) forwards;
+  }
+  .verify-result .batch-id{font-size:1.6rem;font-weight:800;color:var(--honey);margin-bottom:6px;letter-spacing:-0.5px;opacity:0;animation:fadeUp .5s var(--ease) .08s forwards;}
+  .verify-result .onchain{font-size:0.8rem;color:var(--dim);letter-spacing:1.2px;margin-bottom:26px;font-weight:600;opacity:0;animation:fadeUp .5s var(--ease) .14s forwards;}
+  .verify-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:26px;}
+  .verify-grid .item{opacity:0;animation:fadeUp .5s var(--ease) forwards;}
+  .verify-grid .item:nth-child(1){animation-delay:.2s;}
+  .verify-grid .item:nth-child(2){animation-delay:.26s;}
+  .verify-grid .item:nth-child(3){animation-delay:.32s;}
+  .verify-grid .item .lbl{font-size:0.78rem;color:var(--dim);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
+  .verify-grid .item .val{font-size:1rem;color:var(--text);font-weight:500;}
+  .health-row{margin-bottom:24px;opacity:0;animation:fadeUp .5s var(--ease) .38s forwards;}
+  .health-row .lbl{font-size:0.78rem;color:var(--dim);letter-spacing:1.2px;margin-bottom:6px;font-weight:600;}
+  .health-row .val{color:var(--green);font-weight:700;font-size:1.05rem;}
+  .tl-list{display:flex;flex-direction:column;gap:12px;margin-bottom:22px;}
+  .tl-list .tl{
+    font-size:0.94rem;color:var(--muted);display:flex;align-items:flex-start;gap:12px;line-height:1.5;
+    opacity:0;transform:translateX(-8px);animation:tlIn .5s var(--ease) forwards;
+  }
+  .tl-list .tl:nth-child(1){animation-delay:.46s;}
+  .tl-list .tl:nth-child(2){animation-delay:.54s;}
+  .tl-list .tl:nth-child(3){animation-delay:.62s;}
+  .tl-list .tl:nth-child(4){animation-delay:.70s;}
+  @keyframes tlIn{to{opacity:1;transform:translateX(0);}}
+  .tl-list .tl::before{content:"✓";color:var(--green);font-size:0.85rem;font-weight:700;flex-shrink:0;margin-top:2px;}
+  .verify-hash{
+    font-family:ui-monospace,monospace;font-size:0.85rem;color:var(--muted);
+    padding-top:18px;border-top:1px dashed var(--border-2);word-break:break-all;
+    opacity:0;animation:fadeUp .5s var(--ease) .78s forwards;
+  }
+  .verify-hash b{color:var(--honey);}
+
+  /* ============ TABS ============ */
+  .stack-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:36px;}
+  .tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
+  .tab{
+    background:transparent;border:none;color:var(--muted);font-size:0.95rem;font-weight:600;
+    cursor:pointer;padding:12px 18px;border-radius:10px 10px 0 0;position:relative;
+    transition:color .2s;display:inline-flex;align-items:center;gap:10px;min-height:46px;
+  }
+  .tab::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--honey);transform:scaleX(0);transition:transform .3s var(--ease);}
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--honey);}
+  .tab.active::after{transform:scaleX(1);}
+  .tab-panel{display:none;animation:fadeUp .4s var(--ease);}
+  .tab-panel.active{display:block;}
+  .stack-card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:32px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;
+  }
+  .stack-card .cat{font-size:0.78rem;color:var(--honey);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;font-weight:700;}
+  .stack-card h3{font-size:1.35rem;color:var(--text);font-weight:700;margin-bottom:16px;letter-spacing:-0.3px;}
+  .stack-card p{font-size:0.96rem;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+  .stack-card ul{list-style:none;}
+  .stack-card li{
+    font-size:0.92rem;color:var(--muted);padding:8px 0;
+    display:flex;gap:12px;align-items:flex-start;border-bottom:1px dashed var(--border);
+  }
+  .stack-card li:last-child{border-bottom:none;}
+  .stack-card li::before{content:"·";color:var(--honey);font-weight:800;font-size:1.2rem;line-height:1;flex-shrink:0;}
+  .stack-card li b{color:var(--text);font-weight:600;}
+  .stack-visual{
+    background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:24px;
+    display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;
+    min-height:260px;position:relative;overflow:hidden;
+  }
+  .stack-visual::before{content:"";position:absolute;inset:0;background:radial-gradient(200px 200px at 50% 50%, var(--glow), transparent 70%);}
+  .stack-visual .layer{
+    position:relative;z-index:1;display:flex;align-items:center;gap:12px;
+    background:var(--card);border:1px solid var(--border-2);border-radius:10px;
+    padding:12px 16px;width:100%;transition:.3s var(--ease);
+  }
+  .stack-visual .layer:hover{border-color:var(--honey);transform:translateX(4px);}
+  .stack-visual .layer .dot{width:10px;height:10px;border-radius:50%;background:var(--honey);flex-shrink:0;animation:pulseDot 2s ease-in-out infinite;}
+  .stack-visual .layer .txt{font-size:0.86rem;color:var(--text);font-weight:500;}
+  .stack-visual .layer .sub{font-size:0.74rem;color:var(--dim);margin-top:2px;}
+
+  /* ============ TESTIMONIALS ============ */
+  .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;}
+  .test-card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:26px;transition:.3s var(--ease);position:relative;
+  }
+  .test-card:hover{border-color:var(--honey);transform:translateY(-4px);box-shadow:0 12px 36px var(--shadow);}
+  .test-quote{font-size:0.98rem;color:var(--muted);line-height:1.7;margin-bottom:20px;font-style:italic;}
+  .test-quote::before{content:"“";color:var(--honey);font-size:2rem;line-height:0;vertical-align:-8px;margin-right:4px;font-style:normal;}
+  .test-person{display:flex;align-items:center;gap:12px;}
+  .test-avatar{
+    width:44px;height:44px;border-radius:50%;
+    background:linear-gradient(135deg,var(--honey),var(--honey-deep));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;color:#111;font-size:1rem;flex-shrink:0;
+  }
+  .test-name{font-weight:700;color:var(--text);font-size:0.94rem;}
+  .test-role{font-size:0.8rem;color:var(--dim);}
+  .test-stars{color:var(--honey);font-size:0.85rem;letter-spacing:2px;margin-bottom:12px;}
+
+  /* ============ FAQ ============ */
+  .faq-list{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px;}
+  .faq-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .25s;}
+  .faq-item:hover{border-color:var(--border-2);}
+  .faq-item.open{border-color:var(--honey);}
+  .faq-q{
+    width:100%;background:transparent;border:none;color:var(--text);text-align:left;
+    font-size:1.02rem;font-weight:700;padding:22px 24px;cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;letter-spacing:-0.2px;
+  }
+  .faq-q .plus{color:var(--honey);font-size:1.4rem;font-weight:400;transition:transform .3s var(--ease);flex-shrink:0;line-height:1;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
+  .faq-a-inner{padding:0 24px 22px;font-size:0.94rem;color:var(--muted);line-height:1.7;}
+
+  /* ============ FOOTER ============ */
+  footer{border-top:1px solid var(--border);padding:44px 32px;margin-top:20px;position:relative;z-index:2;}
+  .footer-inner{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+  footer .l{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;}
+  footer .l .mark{color:var(--honey);}
+  footer .r{color:var(--dim);font-size:0.85rem;letter-spacing:0.5px;text-align:right;}
+
+  /* ============ FLOATING BEE ============ */
+  .float-bee{
+    position:fixed;z-index:90;font-size:1.6rem;pointer-events:none;
+    transition:transform .6s var(--ease),opacity .3s;
+    filter:drop-shadow(0 4px 12px rgba(245,185,66,0.5));
+    opacity:0;
+  }
+  .float-bee.show{opacity:1;}
+
+  /* ============ BACK TO TOP ============ */
+  .to-top{
+    position:fixed;right:22px;bottom:22px;z-index:150;
+    width:46px;height:46px;border-radius:50%;background:var(--card);
+    border:1px solid var(--border-2);color:var(--honey);font-size:1.1rem;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    opacity:0;transform:translateY(20px);pointer-events:none;
+    transition:.35s var(--ease);box-shadow:0 8px 30px var(--shadow);
+  }
+  .to-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .to-top:hover{background:var(--honey);color:#111;border-color:var(--honey);}
+
+  /* ============ TOAST ============ */
+  #toast{
+    position:fixed;bottom:28px;left:50%;transform:translate(-50%,120px);
+    background:var(--honey);color:#111;padding:14px 26px;border-radius:12px;
+    font-weight:700;font-size:0.95rem;z-index:200;opacity:0;
+    transition:.35s var(--ease);pointer-events:none;
+    box-shadow:0 10px 40px rgba(245,185,66,0.35);
+    max-width:calc(100% - 40px);text-align:center;
+    display:flex;align-items:center;gap:10px;
+  }
+  #toast.show{transform:translate(-50%,0);opacity:1;}
+  #toast.error{background:var(--red);color:#2a0a0a;box-shadow:0 10px 40px rgba(232,138,138,0.3);}
+
+  /* ============ CONFETTI ============ */
+  .confetti{
+    position:fixed;width:10px;height:10px;pointer-events:none;z-index:300;
+    animation:confettiFall 2.5s linear forwards;
+  }
+  @keyframes confettiFall{
+    0%{transform:translateY(0) rotate(0deg);opacity:1;}
+    100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media(max-width:960px){
+    .hero{grid-template-columns:1fr;gap:48px;padding:56px 24px;}
+    .hive-visual{margin:0 auto;}
+    .steps-header,.dash-header,.verify-top,.stack-header,.map-header{grid-template-columns:1fr;gap:24px;}
+    .steps-grid{grid-template-columns:repeat(2,1fr);}
+    .dash-grid{grid-template-columns:1fr;}
+    .stack-card{grid-template-columns:1fr;}
+    .verify-grid{grid-template-columns:1fr;gap:18px;}
+    .faq-list,.test-grid{grid-template-columns:1fr;}
+    nav{padding:14px 20px;}
+    nav ul{display:none;}
+    section{padding:64px 24px;}
+    .trust-inner{gap:22px;font-size:0.9rem;}
+    .verify-section{padding:36px 24px;}
+    .verify-sample{text-align:left;}
+    footer .footer-inner{flex-direction:column;align-items:flex-start;}
+    footer .r{text-align:left;}
+  }
+  @media(max-width:620px){
+    html{font-size:16px;}
+    .steps-grid{grid-template-columns:1fr;}
+    .metrics{grid-template-columns:1fr;}
+    .verify-form{flex-direction:column;}
+    .verify-form button{width:100%;padding:14px;}
+    .hero-stats{gap:26px;}
+    .trust-strip{padding:20px;}
+    .trust-inner{flex-direction:column;gap:12px;align-items:flex-start;}
+    .to-top{right:16px;bottom:16px;}
+    .nav-right .nav-cta{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="pre-hex">
+    <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="30,5 52,17.5 52,42.5 30,55 8,42.5 8,17.5" />
+      <polygon points="30,15 42,22 42,38 30,45 18,38 18,22" style="animation-delay:.5s" />
+    </svg>
+  </div>
+  <div class="pre-brand"><b>✦</b> HONEYCHAIN</div>
+</div>
+
+<!-- CURSOR GLOW -->
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav" aria-label="Main navigation">
+  <div class="logo"><span class="mark" aria-hidden="true">✦</span> HoneyChain</div>
+  <ul>
+    <li><a href="#how" data-nav>How it works</a></li>
+    <li><a href="#hive" data-nav>Live hive</a></li>
+    <li><a href="#map" data-nav>Beekeepers</a></li>
+    <li><a href="#verify" data-nav>Check a jar</a></li>
+    <li><a href="#stack" data-nav>Inside</a></li>
+    <li><a href="#faq" data-nav>Questions</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="icon-btn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">☾</button>
+    <button class="icon-btn" id="soundBtn" aria-label="Toggle ambience" title="Toggle ambience">♪</button>
+    <button class="nav-cta" onclick="document.getElementById('verify').scrollIntoView()">
+      Check your honey →
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg" id="heroBg" aria-hidden="true"></div>
+  <div class="reveal in">
+    <div class="eyebrow">Real honey · Real proof</div>
+    <h1>Know the story<br/>behind <span class="accent">every drop.</span></h1>
+    <p class="lead">
+      HoneyChain follows your honey from the beehive to your table. Small sensors
+      watch the hive, smart software checks the bees' health, and every batch is
+      locked into a record that no one can secretly change.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-primary" data-ripple onclick="document.getElementById('verify').scrollIntoView()">
+        Check a jar →
+      </button>
+      <button class="btn-ghost" data-ripple onclick="document.getElementById('how').scrollIntoView()">
+        See how it works
+      </button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="num" data-count="100" data-suffix="%">0%</div>
+        <div class="lbl">Sensor-backed<br/>batch records</div>
+      </div>
+      <div class="stat">
+        <div class="num" data-count="4">0</div>
+        <div class="lbl">Steps from hive<br/>to your jar</div>
+      </div>
+      <div class="stat">
+        <div class="num" data-count="3">0</div>
+        <div class="lbl">Independent<br/>technology layers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hive-visual" id="hiveVisual" role="img" aria-label="Animated illustration of a live beehive showing temperature, humidity and weight readings">
+    <div class="hive-header">
+      <span>LIVE HIVE</span>
+      <span class="status-dot">CONNECTED</span>
+    </div>
+    <svg class="hive-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g stroke="#2f2f2f" fill="none" stroke-width="1" opacity="0.55">
+        <polygon points="120,80 150,65 180,80 180,110 150,125 120,110" />
+        <polygon points="180,80 210,65 240,80 240,110 210,125 180,110" />
+        <polygon points="240,80 270,65 300,80 300,110 270,125 240,110" />
+        <polygon points="150,125 180,110 210,125 210,155 180,170 150,155" />
+        <polygon points="210,125 240,110 270,125 270,155 240,170 210,155" />
+        <polygon points="120,170 150,155 180,170 180,200 150,215 120,200" />
+        <polygon points="180,170 210,155 240,170 240,200 210,215 180,200" />
+        <polygon points="240,170 270,155 300,170 300,200 270,215 240,200" />
+        <polygon points="150,215 180,200 210,215 210,245 180,260 150,245" />
+        <polygon points="210,215 240,200 270,215 270,245 240,260 210,245" />
+        <polygon points="180,260 210,245 240,260 240,290 210,305 180,290" />
+      </g>
+      <polygon class="hex-glow" points="180,170 210,155 240,170 240,200 210,215 180,200"
+        fill="rgba(245,185,66,0.10)" stroke="#f5b942" stroke-width="1.8"/>
+      <g class="bee-group">
+        <ellipse cx="0" cy="0" rx="9" ry="6" fill="#f5b942"/>
+        <ellipse cx="-4" cy="0" rx="2.5" ry="5.5" fill="#1a1a1a"/>
+        <ellipse cx="3" cy="0" rx="2.5" ry="5.5" fill="#1a1a1a"/>
+        <ellipse cx="-9" cy="-4" rx="4" ry="3" fill="rgba(200,200,255,0.55)" transform="rotate(-30 -9 -4)"/>
+      </g>
+      <g stroke="rgba(245,185,66,0.28)" stroke-width="1" fill="none">
+        <line class="conn-line" x1="210" y1="185" x2="60" y2="60"/>
+        <line class="conn-line" x1="210" y1="185" x2="340" y2="90" style="animation-delay:.3s"/>
+        <line class="conn-line" x1="210" y1="185" x2="60" y2="320" style="animation-delay:.6s"/>
+        <line class="conn-line" x1="210" y1="185" x2="340" y2="340" style="animation-delay:.9s"/>
+      </g>
+      <g fill="#f5b942">
+        <circle class="node-dot" cx="60" cy="60" r="3.5"/>
+        <circle class="node-dot" cx="340" cy="90" r="3.5"/>
+        <circle class="node-dot" cx="60" cy="320" r="3.5"/>
+        <circle class="node-dot" cx="340" cy="340" r="3.5"/>
+      </g>
+    </svg>
+    <div class="hive-badge temp"><span class="ico" aria-hidden="true">☀</span> 34.2°C</div>
+    <div class="hive-badge hum"><span class="ico" aria-hidden="true">💧</span> 68%</div>
+    <div class="hive-badge wt"><span class="ico" aria-hidden="true">⚖</span> 42.8 kg</div>
+    <div class="hive-footer">
+      <span>HIVE ID · HC-0247</span>
+      <span>STATUS · HEALTHY</span>
+    </div>
+  </div>
+</header>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <span>Made to fight fake honey</span>
+    <span>Made to earn your trust</span>
+    <span>Made to support local beekeepers</span>
+    <span>Made to help every hive thrive</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="steps-header">
+    <div class="reveal">
+      <div class="section-eyebrow">How it works</div>
+      <h2 class="section-title">Four simple steps,<br/>from hive to <span class="accent">home.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      Other systems rely on paperwork filled out after the fact. HoneyChain builds
+      the record automatically, using real readings taken inside the hive itself.
+    </p>
+  </div>
+  <div class="steps-grid">
+    <article class="step-card reveal">
+      <div class="step-num">1</div>
+      <h3>Sensors watch the hive</h3>
+      <p>Small, low-cost devices inside the beehive measure temperature, humidity, weight and sound — all day, every day.</p>
+      <div class="tech-note">Uses affordable hardware that works even in rural areas.</div>
+    </article>
+    <article class="step-card reveal d1">
+      <div class="step-num">2</div>
+      <h3>AI checks the bees</h3>
+      <p>Smart software studies the readings to spot signs of illness, track the colony's health, and predict the next harvest.</p>
+      <div class="tech-note">Learns what a healthy hive looks and sounds like.</div>
+    </article>
+    <article class="step-card reveal d2">
+      <div class="step-num">3</div>
+      <h3>Records are locked in</h3>
+      <p>When honey is harvested, a permanent digital record is created — one that cannot be edited or faked later.</p>
+      <div class="tech-note">Stored on a shared ledger that no single person controls.</div>
+    </article>
+    <article class="step-card reveal d3">
+      <div class="step-num">4</div>
+      <h3>You scan and see</h3>
+      <p>Scan the QR code on the jar to see the beekeeper, the hive, the harvest date, and the health of the colony.</p>
+      <div class="tech-note">Opens in any phone browser. No app needed.</div>
+    </article>
+  </div>
+</section>
+
+<!-- LIVE HIVE DASHBOARD -->
+<section id="hive">
+  <div class="dash-header">
+    <div class="reveal">
+      <div class="section-eyebrow">For beekeepers</div>
+      <h2 class="section-title">One simple view of<br/>all your <span class="accent">hives.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      A live dashboard that turns sensor readings into clear, everyday advice —
+      so beekeepers can act before problems grow.
+    </p>
+  </div>
+  <div class="dash-grid">
+    <div class="panel reveal">
+      <div class="panel-head">
+        <div class="title">Hive cluster · Karnataka</div>
+        <span class="live-tag">LIVE</span>
+        <button class="refresh-btn" id="refreshBtn" onclick="refreshHive()" aria-label="Refresh hive data">
+          <span class="ico" aria-hidden="true">↻</span> Refresh
+        </button>
+      </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="lbl">Colony health</div>
+          <div class="val" id="m-health">94.8%</div>
+          <div class="delta">↑ 2.4% this week</div>
+          <svg class="sparkline" viewBox="0 0 100 22" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,16 20,14 40,15 60,10 80,8 100,5" fill="none" stroke="var(--honey)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="metric">
+          <div class="lbl">Hive weight</div>
+          <div class="val" id="m-weight">42.8 kg</div>
+          <div class="delta">↑ 1.8 kg in 7 days</div>
+          <svg class="sparkline" viewBox="0 0 100 22" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,18 20,16 40,17 60,13 80,10 100,7" fill="none" stroke="var(--honey)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="metric">
+          <div class="lbl">Harvest forecast</div>
+          <div class="val" id="m-yield">18.6 kg</div>
+          <div class="delta">Expected next window</div>
+          <svg class="sparkline" viewBox="0 0 100 22" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,14 20,13 40,12 60,10 80,7 100,4" fill="none" stroke="var(--honey)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="chart-label">
+        <span>Hive weight over time</span>
+        <span id="lastUpdated">Last 7 days</span>
+      </div>
+      <div class="line-chart" id="lineChart" role="img" aria-label="Line chart showing hive weight over the last seven days">
+        <svg viewBox="0 0 700 180" preserveAspectRatio="none" id="chartSvg">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--honey)"/>
+              <stop offset="100%" stop-color="var(--honey)" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g stroke="var(--border)" stroke-width="1" stroke-dasharray="3 6">
+            <line x1="0" y1="40" x2="700" y2="40"/>
+            <line x1="0" y1="90" x2="700" y2="90"/>
+            <line x1="0" y1="140" x2="700" y2="140"/>
+          </g>
+          <path class="chart-area" id="chartArea" d=""/>
+          <path class="chart-path" id="chartPath" d=""/>
+          <g id="chartDots"></g>
+        </svg>
+      </div>
+      <div class="bar-dates" id="barDates" aria-hidden="true"></div>
+    </div>
+    <div class="panel insights reveal d1">
+      <div class="panel-head" style="margin-bottom:0;">
+        <div class="title">What the AI noticed</div>
+      </div>
+      <div class="insight">
+        <div class="ico" aria-hidden="true">✓</div>
+        <div class="body"><b>Colony looks healthy</b>All readings are within the normal range.</div>
+      </div>
+      <div class="insight">
+        <div class="ico" aria-hidden="true">↑</div>
+        <div class="body"><b>Good harvest coming</b>Weight is rising — harvest likely in about 5 days.</div>
+      </div>
+      <div class="insight">
+        <div class="ico" aria-hidden="true">◐</div>
+        <div class="body">
+          <b>No illness detected</b>
+          Latest sound sample shows no warning signs.
+          <span class="wave" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </span>
+        </div>
+      </div>
+      <button class="view-report" onclick="showToast('Full AI report opening…')">
+        View full report →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section id="map">
+  <div class="map-header">
+    <div class="reveal">
+      <div class="section-eyebrow">Our network</div>
+      <h2 class="section-title">Beekeepers across<br/><span class="accent">India.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      Hover or tap the pins to see the beekeepers using HoneyChain. Every jar
+      carries the story of one of these hives.
+    </p>
+  </div>
+  <div class="map-wrap reveal">
+    <svg class="map-svg" viewBox="0 0 500 560" xmlns="http://www.w3.org/2000/svg" aria-label="Map of India showing beekeeper locations">
+      <path class="map-country" d="M170,40 L195,55 L215,45 L245,60 L260,80 L280,75 L300,95 L295,120 L310,140 L305,165 L285,175 L275,200 L285,225 L270,250 L250,265 L240,295 L230,325 L215,355 L200,390 L190,425 L175,460 L160,485 L150,510 L140,520 L130,500 L120,470 L110,440 L100,410 L95,380 L90,350 L85,320 L80,290 L75,260 L70,230 L75,200 L85,175 L100,150 L115,130 L130,110 L145,90 L155,65 Z" opacity="0.5"/>
+      <path class="map-country" d="M295,95 L315,100 L330,120 L340,150 L335,180 L320,200 L305,205 L295,180 L290,150 L285,120 Z" opacity="0.35"/>
+      <!-- pins -->
+      <g id="pins">
+        <g data-pin="mandya">
+          <circle class="pin-pulse" cx="180" cy="430" r="6"/>
+          <circle class="pin" cx="180" cy="430" r="6"/>
+        </g>
+        <g data-pin="kutch">
+          <circle class="pin-pulse" cx="95" cy="215" r="6" style="animation-delay:.5s"/>
+          <circle class="pin" cx="95" cy="215" r="6"/>
+        </g>
+        <g data-pin="sundarbans">
+          <circle class="pin-pulse" cx="295" cy="250" r="6" style="animation-delay:1s"/>
+          <circle class="pin" cx="295" cy="250" r="6"/>
+        </g>
+      </g>
+    </svg>
+    <div class="pin-tooltip" id="mapTooltip" role="status" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- BLOCKCHAIN LEDGER -->
+<section id="ledger">
+  <div class="stack-header">
+    <div class="reveal">
+      <div class="section-eyebrow">Under the hood</div>
+      <h2 class="section-title">Every jar,<br/>on a <span class="accent">live ledger.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      Watch new batches being added in real time. Each block links to the one
+      before it — so nothing can be quietly changed.
+    </p>
+  </div>
+  <div class="ledger-wrap reveal">
+    <div class="ledger-scroll" id="ledgerScroll" aria-live="polite"></div>
+    <div class="ledger-status">
+      <span><span class="live-tag">LIVE</span> · New blocks every few seconds</span>
+      <span id="blockCount">0 blocks</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="compare">
+  <div class="stack-header">
+    <div class="reveal">
+      <div class="section-eyebrow">Why it matters</div>
+      <h2 class="section-title">See the<br/><span class="accent">difference.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      Drag the handle to compare honey with a proven story against honey with no
+      way to check where it came from.
+    </p>
+  </div>
+  <div class="compare-wrap reveal" id="compareWrap">
+    <div class="compare-side compare-fake">
+      <div>
+        <h3>Honey with no story</h3>
+        <p>You can't tell where it was made, who made it, or what's inside.</p>
+        <ul>
+          <li>Unknown origin</li>
+          <li>No way to check purity</li>
+          <li>Possible added sugar syrups</li>
+          <li>No link to the beekeeper</li>
+        </ul>
+      </div>
+    </div>
+    <div class="compare-side compare-real" id="compareReal">
+      <div>
+        <h3>HoneyChain honey</h3>
+        <p>Every jar comes with a full, checkable record from the hive it was made in.</p>
+        <ul>
+          <li>Named beekeeper &amp; hive</li>
+          <li>Live sensor history</li>
+          <li>Tamper-proof record</li>
+          <li>Direct support to the farm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="compare-handle" id="compareHandle" role="slider" aria-label="Comparison slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0"></div>
+    <div class="compare-labels">
+      <span>NO STORY</span>
+      <span>FULL STORY</span>
+    </div>
+  </div>
+</section>
+
+<!-- VERIFY -->
+<section id="verify">
+  <div class="verify-section">
+    <div class="verify-top">
+      <div class="reveal">
+        <div class="section-eyebrow">For everyone</div>
+        <h2>Scan. See.<br/><span class="accent">Trust.</span></h2>
+        <p>
+          Every jar of HoneyChain honey has a QR code. Scan it — or type the batch
+          number below — to see exactly where your honey came from.
+        </p>
+        <form class="verify-form" onsubmit="event.preventDefault(); verifyBatch();">
+          <label for="batchInput" class="sr-only">Batch ID</label>
+          <input type="text" id="batchInput" value="HC-2026-0842" placeholder="Enter batch ID" autocomplete="off"/>
+          <button type="submit">Check it →</button>
+        </form>
+        <div class="verify-hint" id="verifyHint" role="status" aria-live="polite">
+          Try the sample batch ID above to see a real record.
+        </div>
+        <div class="sample-chips" id="sampleChips"></div>
+      </div>
+      <div class="verify-sample reveal d1">
+        <div class="code">
+          <span class="qr" id="qrBox" aria-hidden="true"></span>
+          <span>HC-2026-0842</span>
+        </div>
+        <div class="cap">SAMPLE BATCH · SCAN TO VIEW HISTORY</div>
+      </div>
+    </div>
+
+    <div class="verify-result" id="verifyResult" aria-live="polite">
+      <div class="verified-tag">✓ Verified authentic batch</div>
+      <div class="batch-id" id="r-id">HC-2026-0842</div>
+      <div class="onchain">◆ STORED ON A TAMPER-PROOF RECORD</div>
+      <div class="verify-grid">
+        <div class="item">
+          <div class="lbl">Beekeeper</div>
+          <div class="val" id="r-keeper">Ravi Kumar</div>
+        </div>
+        <div class="item">
+          <div class="lbl">Location</div>
+          <div class="val" id="r-loc">Mandya, Karnataka</div>
+        </div>
+        <div class="item">
+          <div class="lbl">Harvest date</div>
+          <div class="val" id="r-date">08 Sep 2026</div>
+        </div>
+      </div>
+      <div class="health-row">
+        <div class="lbl">HIVE HEALTH AT HARVEST</div>
+        <div class="val" id="r-health">94.8% · Healthy</div>
+      </div>
+      <div class="tl-list">
+        <div class="tl">Harvested · 08 Sep · Hive HC-0247</div>
+        <div class="tl">Extracted and quality-checked · 09 Sep</div>
+        <div class="tl">Packaged and sealed · 09 Sep</div>
+        <div class="tl">Shipped · In transit</div>
+      </div>
+      <div class="verify-hash">
+        Digital fingerprint <b id="r-hash">0x8f4c…91ab27</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section id="stack">
+  <div class="stack-header">
+    <div class="reveal">
+      <div class="section-eyebrow">What's inside</div>
+      <h2 class="section-title">Three layers,<br/><span class="accent">working together.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      Each part was chosen to be reliable, affordable, and easy to run — even in
+      remote areas with limited connectivity.
+    </p>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Technology layers">
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1" data-tab="1">
+      <span aria-hidden="true">◎</span> In the hive
+    </button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2" data-tab="2">
+      <span aria-hidden="true">✦</span> In the software
+    </button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-3" id="tab-3" data-tab="3">
+      <span aria-hidden="true">⬡</span> On the record
+    </button>
+  </div>
+  <div class="tab-panel active" id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+    <div class="stack-card">
+      <div>
+        <div class="cat">In the hive</div>
+        <h3>Small sensors, big picture</h3>
+        <p>Compact, battery-friendly devices that sit quietly inside the beehive and send readings over long-range wireless.</p>
+        <ul>
+          <li><b>Temperature and humidity</b> — keeps the colony comfortable</li>
+          <li><b>Weight sensor</b> — shows how much honey is being made</li>
+          <li><b>Microphone</b> — listens for signs of disease</li>
+        </ul>
+      </div>
+      <div class="stack-visual" aria-hidden="true">
+        <div class="layer"><div class="dot"></div><div><div class="txt">Temperature &amp; humidity</div><div class="sub">34.2°C · 68%</div></div></div>
+        <div class="layer"><div class="dot" style="animation-delay:.5s"></div><div><div class="txt">Weight</div><div class="sub">42.8 kg</div></div></div>
+        <div class="layer"><div class="dot" style="animation-delay:1s"></div><div><div class="txt">Sound</div><div class="sub">Normal hum</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2">
+    <div class="stack-card">
+      <div>
+        <div class="cat">In the software</div>
+        <h3>Hive intelligence</h3>
+        <p>Machine learning models that turn raw numbers into plain-language advice for beekeepers.</p>
+        <ul>
+          <li><b>Health score</b> — a simple 0–100 rating for each hive</li>
+          <li><b>Harvest forecast</b> — predicts when honey will be ready</li>
+          <li><b>Illness alerts</b> — flags problems early</li>
+        </ul>
+      </div>
+      <div class="stack-visual" aria-hidden="true">
+        <div class="layer"><div class="dot"></div><div><div class="txt">Health score</div><div class="sub">94.8% · Healthy</div></div></div>
+        <div class="layer"><div class="dot" style="animation-delay:.5s"></div><div><div class="txt">Harvest forecast</div><div class="sub">18.6 kg · ~5 days</div></div></div>
+        <div class="layer"><div class="dot" style="animation-delay:1s"></div><div><div class="txt">Illness alert</div><div class="sub">No signs detected</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3">
+    <div class="stack-card">
+      <div>
+        <div class="cat">On the record</div>
+        <h3>Tamper-proof history</h3>
+        <p>A shared digital ledger that stores each batch permanently — no one can quietly change it later.</p>
+        <ul>
+          <li><b>Every batch registered</b> the moment it's harvested</li>
+          <li><b>Full supply chain</b> — from hive to shelf</li>
+          <li><b>Publicly checkable</b> — anyone can verify it</li>
+        </ul>
+      </div>
+      <div class="stack-visual" aria-hidden="true">
+        <div class="layer"><div class="dot"></div><div><div class="txt">Batch HC-2026-0842</div><div class="sub">Registered 08 Sep 2026</div></div></div>
+        <div class="layer"><div class="dot" style="animation-delay:.5s"></div><div><div class="txt">Supply chain</div><div class="sub">Hive → Extractor → Packer</div></div></div>
+        <div class="layer"><div class="dot" style="animation-delay:1s"></div><div><div class="txt">Digital fingerprint</div><div class="sub">0x8f4c…91ab27</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="voices">
+  <div class="stack-header">
+    <div class="reveal">
+      <div class="section-eyebrow">Voices</div>
+      <h2 class="section-title">What people<br/><span class="accent">are saying.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      Beekeepers and buyers who've tried the prototype share how it changes their day.
+    </p>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">Before, I had to guess if a hive was in trouble. Now I open my phone and I know in seconds.</p>
+      <div class="test-person">
+        <div class="test-avatar">RK</div>
+        <div>
+          <div class="test-name">Ravi Kumar</div>
+          <div class="test-role">Beekeeper · Mandya, Karnataka</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal d1">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">I finally feel confident buying local honey. The QR code tells me everything I want to know.</p>
+      <div class="test-person">
+        <div class="test-avatar">AS</div>
+        <div>
+          <div class="test-name">Anjali Sharma</div>
+          <div class="test-role">Buyer · Bengaluru</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal d2">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-quote">The harvest forecast is a game-changer. I plan my whole season around it.</p>
+      <div class="test-person">
+        <div class="test-avatar">RP</div>
+        <div>
+          <div class="test-name">Ramesh Patel</div>
+          <div class="test-role">Beekeeper · Kutch, Gujarat</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="stack-header">
+    <div class="reveal">
+      <div class="section-eyebrow">Common questions</div>
+      <h2 class="section-title">Simple answers,<br/><span class="accent">no jargon.</span></h2>
+    </div>
+    <p class="section-lead reveal d1">
+      New to all this? Here are the questions we hear most often.
+    </p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <button class="faq-q" aria-expanded="false">Do I need an app to check my honey?<span class="plus" aria-hidden="true">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">No. Just point your phone camera at the QR code on the jar — it opens a normal web page with the full story of that batch.</div></div>
+    </div>
+    <div class="faq-item reveal d1">
+      <button class="faq-q" aria-expanded="false">How do I know the record hasn't been faked?<span class="plus" aria-hidden="true">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Each batch is stored on a shared digital ledger that many computers keep copies of. Changing one copy would immediately disagree with all the others, so tampering is impossible to hide.</div></div>
+    </div>
+    <div class="faq-item reveal d2">
+      <button class="faq-q" aria-expanded="false">What exactly do the sensors measure?<span class="plus" aria-hidden="true">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Temperature, humidity, hive weight, and sound. Together these show whether the bees are healthy, active, and producing honey normally.</div></div>
+    </div>
+    <div class="faq-item reveal d3">
+      <button class="faq-q" aria-expanded="false">Is this only for large farms?<span class="plus" aria-hidden="true">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">No — it's designed for small and independent beekeepers too. The hardware is low-cost and works over long-range wireless, so it's practical even in rural areas.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="l"><span class="mark" aria-hidden="true">✦</span> HoneyChain</div>
+    <div class="r">
+      PROVING THE STORY BEHIND EVERY DROP<br/>
+      Prototype · Sensors + AI + Tamper-proof records
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BEE -->
+<div class="float-bee" id="floatBee" aria-hidden="true">🐝</div>
+
+<!-- BACK TO TOP -->
+<button class="to-top" id="toTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<div id="toast" role="status" aria-live="polite">✓ Verified</div>
+
+<script>
+/* ============================================================
+   PRELOADER
+   ============================================================ */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('preloader').classList.add('done');
+  }, 900);
+});
+
+/* ============================================================
+   CURSOR GLOW
+   ============================================================ */
+const cursorGlow = document.getElementById('cursorGlow');
+let cx = window.innerWidth/2, cy = window.innerHeight/2;
+let gx = cx, gy = cy;
+document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+function loopCursor(){
+  gx += (cx - gx) * 0.14;
+  gy += (cy - gy) * 0.14;
+  cursorGlow.style.transform = `translate(${gx}px, ${gy}px) translate(-50%,-50%)`;
+  requestAnimationFrame(loopCursor);
+}
+if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) loopCursor();
+
+/* ============================================================
+   FLOATING HEX BACKGROUND
+   ============================================================ */
+(function makeHexes(){
+  const bg = document.getElementById('heroBg');
+  if (!bg) return;
+  const total = window.innerWidth < 700 ? 8 : 16;
+  for (let i = 0; i < total; i++){
+    const h = document.createElement('span');
+    h.className = 'float-hex';
+    h.textContent = '⬡';
+    h.style.left = Math.random() * 100 + '%';
+    h.style.fontSize = (0.8 + Math.random() * 1.6) + 'rem';
+    h.style.animationDuration = (14 + Math.random() * 14) + 's';
+    h.style.animationDelay = (-Math.random() * 20) + 's';
+    bg.appendChild(h);
+  }
+})();
+
+/* ============================================================
+   FLOATING BEE (follows scroll)
+   ============================================================ */
+const bee = document.getElementById('floatBee');
+let beeVisible = false;
+function updateBee(){
+  const scrolled = window.scrollY;
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = total > 0 ? scrolled / total : 0;
+  if (scrolled > 400 && !beeVisible){ bee.classList.add('show'); beeVisible = true; }
+  if (scrolled < 200 && beeVisible){ bee.classList.remove('show'); beeVisible = false; }
+  const y = 200 + progress * (window.innerHeight - 400);
+  const x = 30 + Math.sin(progress * Math.PI * 6) * 40;
+  bee.style.transform = `translate(${x}px, ${y}px) rotate(${Math.sin(progress * 20) * 15}deg)`;
+}
+window.addEventListener('scroll', updateBee, {passive:true});
+updateBee();
+
+/* ============================================================
+   SCROLL PROGRESS + NAV + BACK-TO-TOP
+   ============================================================ */
+const progress = document.getElementById('scrollProgress');
+const nav = document.getElementById('mainNav');
+const toTop = document.getElementById('toTop');
+const navLinks = document.querySelectorAll('[data-nav]');
+const sections = document.querySelectorAll('section[id]');
+
+function onScroll(){
+  const h = document.documentElement;
+  const scrolled = h.scrollTop;
+  const total = h.scrollHeight - h.clientHeight;
+  progress.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+  nav.classList.toggle('shrink', scrolled > 40);
+  toTop.classList.toggle('show', scrolled > 600);
+
+  let current = '';
+  sections.forEach(s => {
+    const top = s.offsetTop - 140;
+    if (scrolled >= top) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
+
+/* ============================================================
+   REVEAL ON SCROLL
+   ============================================================ */
+const revealIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting){
+      e.target.classList.add('in');
+      revealIO.unobserve(e.target);
+    }
+  });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+
+/* ============================================================
+   ANIMATED COUNTERS
+   ============================================================ */
+function animateCount(el){
+  const target = parseFloat(el.dataset.count);
+  const suffix = el.dataset.suffix || '';
+  const decimals = parseInt(el.dataset.decimals || '0', 10);
+  const duration = 1400;
+  const start = performance.now();
+  function tick(now){
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = (target * eased).toFixed(decimals) + suffix;
+    if (t < 1) requestAnimationFrame(tick);
+    else el.textContent = target.toFixed(decimals) + suffix;
+  }
+  requestAnimationFrame(tick);
+}
+const counterIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting){ animateCount(e.target); counterIO.unobserve(e.target); }
+  });
+}, {threshold:0.5});
+document.querySelectorAll('[data-count]').forEach(el => counterIO.observe(el));
+
+/* ============================================================
+   HERO PARALLAX
+   ============================================================ */
+const hiveVisual = document.getElementById('hiveVisual');
+if (hiveVisual && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < 900) hiveVisual.style.transform = `translateY(${y * 0.04}px)`;
+  }, {passive:true});
+}
+
+/* ============================================================
+   STEP CARD MOUSE GLOW
+   ============================================================ */
+document.querySelectorAll('.step-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    card.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+    card.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+  });
+});
+
+/* ============================================================
+   RIPPLE BUTTONS
+   ============================================================ */
+document.querySelectorAll('[data-ripple]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const r = btn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const size = Math.max(r.width, r.height);
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - r.left - size/2) + 'px';
+    ripple.style.top = (e.clientY - r.top - size/2) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 700);
+  });
+});
+
+/* ============================================================
+   LINE CHART
+   ============================================================ */
+const weights = [34, 36, 35, 38, 40, 42, 44];
+const days = ['04','05','06','07','08','09','10'];
+let chartPoints = [];
+
+function drawChart(){
+  const max = Math.max(...weights) + 2;
+  const min = Math.min(...weights) - 2;
+  const range = max - min || 1;
+  const W = 700, H = 180, padX = 20, padY = 20;
+  const step = (W - padX*2) / (weights.length - 1);
+
+  chartPoints = weights.map((w, i) => ({
+    x: padX + i * step,
+    y: padY + (1 - (w - min) / range) * (H - padY*2),
+    v: w
+  }));
+
+  // smooth path
+  let d = `M ${chartPoints[0].x} ${chartPoints[0].y}`;
+  for (let i = 1; i < chartPoints.length; i++){
+    const p0 = chartPoints[i-1], p1 = chartPoints[i];
+    const cx1 = p0.x + (p1.x - p0.x) * 0.4;
+    const cx2 = p1.x - (p1.x - p0.x) * 0.4;
+    d += ` C ${cx1} ${p0.y}, ${cx2} ${p1.y}, ${p1.x} ${p1.y}`;
+  }
+
+  document.getElementById('chartPath').setAttribute('d', d);
+  document.getElementById('chartArea').setAttribute('d', d + ` L ${chartPoints[chartPoints.length-1].x} ${H} L ${chartPoints[0].x} ${H} Z`);
+
+  const dotsGroup = document.getElementById('chartDots');
+  dotsGroup.innerHTML = '';
+  chartPoints.forEach((p, i) => {
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('class', 'chart-dot');
+    c.setAttribute('cx', p.x);
+    c.setAttribute('cy', p.y);
+    c.setAttribute('r', 5);
+    dotsGroup.appendChild(c);
+  });
+
+  const dates = document.getElementById('barDates');
+  dates.innerHTML = '';
+  days.forEach(d => {
+    const s = document.createElement('span');
+    s.textContent = d + ' Sep';
+    dates.appendChild(s);
+  });
+}
+drawChart();
+
+/* ============================================================
+   LIVE DASHBOARD
+   ============================================================ */
+let liveTimer = null;
+function startLiveUpdates(){
+  if (liveTimer) return;
+  liveTimer = setInterval(() => {
+    const healthEl = document.getElementById('m-health');
+    const weightEl = document.getElementById('m-weight');
+    const yieldEl  = document.getElementById('m-yield');
+
+    healthEl.textContent = (92 + Math.random() * 5).toFixed(1) + '%';
+    weightEl.textContent = (41 + Math.random() * 4).toFixed(1) + ' kg';
+    yieldEl.textContent  = (17 + Math.random() * 2.5).toFixed(1) + ' kg';
+
+    [healthEl, weightEl, yieldEl].forEach(el => {
+      el.classList.add('flash');
+      setTimeout(() => el.classList.remove('flash'), 600);
+    });
+
+    for (let i = 0; i < weights.length; i++){
+      weights[i] = Math.max(30, weights[i] + (Math.random() - 0.5) * 0.6);
+    }
+    drawChart();
+
+    const lu = document.getElementById('lastUpdated');
+    const now = new Date();
+    lu.textContent = 'Updated ' + now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }, 4200);
+}
+const dashIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) startLiveUpdates();
+    else if (liveTimer){ clearInterval(liveTimer); liveTimer = null; }
+  });
+}, {threshold:0.2});
+const dash = document.getElementById('hive');
+if (dash) dashIO.observe(dash);
+
+function refreshHive(){
+  const btn = document.getElementById('refreshBtn');
+  btn.classList.add('spin');
+  setTimeout(() => btn.classList.remove('spin'), 800);
+
+  const healthEl = document.getElementById('m-health');
+  const weightEl = document.getElementById('m-weight');
+  const yieldEl  = document.getElementById('m-yield');
+
+  healthEl.textContent = (92 + Math.random() * 6).toFixed(1) + '%';
+  weightEl.textContent = (40 + Math.random() * 5).toFixed(1) + ' kg';
+  yieldEl.textContent  = (17 + Math.random() * 3).toFixed(1) + ' kg';
+
+  [healthEl, weightEl, yieldEl].forEach(el => {
+    el.classList.add('flash');
+    setTimeout(() => el.classList.remove('flash'), 600);
+  });
+
+  for (let i = 0; i < weights.length; i++){
+    weights[i] = Math.max(30, weights[i] + (Math.random() - 0.5) * 1.2);
+  }
+  drawChart();
+  showToast('Hive data refreshed');
+}
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+(function buildTicker(){
+  const track = document.getElementById('tickerTrack');
+  const items = [
+    'New batch registered · <b>HC-2026-0842</b> · Mandya, Karnataka <span class="pos">+18.6 kg</span>',
+    'Hive <b>HC-0247</b> health stable at <b>94.8%</b>',
+    'Harvest window opening in <b>~5 days</b> · Karnataka cluster',
+    'Batch <b>HC-2026-0417</b> verified by buyer in Ahmedabad',
+    'Colony audio check complete · <b>no disease signature</b>',
+    'Batch <b>HC-2026-0523</b> shipped to Kolkata · in transit',
+    'Live weight trend rising across <b>4 active hives</b>'
+  ];
+  const html = items.map(t => `<span class="ticker-item"><span class="dot"></span>${t}</span>`).join('');
+  track.innerHTML = html + html;
+})();
+
+/* ============================================================
+   INTERACTIVE MAP
+   ============================================================ */
+const pinData = {
+  mandya:    { name:'Ravi Kumar',   loc:'Mandya, Karnataka',   hive:'HC-0247', health:'94.8%', yield:'18.6 kg' },
+  kutch:     { name:'Ramesh Patel', loc:'Kutch, Gujarat',      hive:'HC-0311', health:'92.1%', yield:'16.4 kg' },
+  sundarbans:{ name:'Sunita Devi',  loc:'Sundarbans, WB',      hive:'HC-0129', health:'88.4%', yield:'14.2 kg' }
+};
+const mapWrap = document.querySelector('.map-wrap');
+const tooltip = document.getElementById('mapTooltip');
+
+document.querySelectorAll('[data-pin]').forEach(g => {
+  const key = g.dataset.pin;
+  const data = pinData[key];
+  const show = (e) => {
+    const r = g.querySelector('.pin').getBoundingClientRect();
+    const wr = mapWrap.getBoundingClientRect();
+    tooltip.innerHTML = `
+      <div class="name">${data.name}</div>
+      <div class="loc">${data.loc}</div>
+      <div class="stat"><span>Hive</span><b>${data.hive}</b></div>
+      <div class="stat"><span>Health</span><b>${data.health}</b></div>
+      <div class="stat"><span>Forecast</span><b>${data.yield}</b></div>
+    `;
+    tooltip.style.left = (r.left - wr.left - 90) + 'px';
+    tooltip.style.top = (r.top - wr.top - 140) + 'px';
+    tooltip.classList.add('show');
+  };
+  const hide = () => tooltip.classList.remove('show');
+  g.addEventListener('mouseenter', show);
+  g.addEventListener('mousemove', show);
+  g.addEventListener('mouseleave', hide);
+  g.addEventListener('click', show);
+});
+
+/* ============================================================
+   BLOCKCHAIN LEDGER
+   ============================================================ */
+const ledger = document.getElementById('ledgerScroll');
+const blockCountEl = document.getElementById('blockCount');
+let blockNum = 0;
+const sampleBlocks = [
+  { batch:'HC-2026-0842', hive:'HC-0247', keeper:'Ravi Kumar', loc:'Mandya, KA' },
+  { batch:'HC-2026-0417', hive:'HC-0311', keeper:'Ramesh Patel', loc:'Kutch, GJ' },
+  { batch:'HC-2026-0523', hive:'HC-0129', keeper:'Sunita Devi', loc:'Sundarbans, WB' }
+];
+let blockIdx = 0;
+
+function randHash(len = 10){
+  return '0x' + Array.from({length:len}, () => Math.floor(Math.random()*16).toString(16)).join('');
+}
+
+function addBlock(){
+  const data = sampleBlocks[blockIdx % sampleBlocks.length];
+  blockIdx++;
+  blockNum++;
+  const el = document.createElement('div');
+  el.className = 'block new';
+  el.innerHTML = `
+    <div class="block-num">BLOCK #${blockNum}<span class="badge">NEW</span></div>
+    <div class="block-hash">${randHash(14)}</div>
+    <div class="block-data">
+      <b>${data.batch}</b><br/>
+      Hive ${data.hive} · ${data.kepeer || data.keeper}<br/>
+      ${data.loc}
+    </div>
+  `;
+  ledger.appendChild(el);
+  if (ledger.children.length > 7) ledger.removeChild(ledger.firstChild);
+  ledger.scrollLeft = ledger.scrollWidth;
+  blockCountEl.textContent = blockNum + ' block' + (blockNum !== 1 ? 's' : '');
+  setTimeout(() => el.classList.remove('new'), 700);
+}
+
+// seed initial blocks
+for (let i = 0; i < 3; i++) setTimeout(addBlock, i * 200);
+setInterval(addBlock, 3800);
+
+/* ============================================================
+   COMPARISON SLIDER
+   ============================================================ */
+(function compareSlider(){
+  const wrap = document.getElementById('compareWrap');
+  const handle = document.getElementById('compareHandle');
+  const real = document.getElementById('compareReal');
+  let dragging = false;
+
+  function setPos(clientX){
+    const r = wrap.getBoundingClientRect();
+    let x = (clientX - r.left) / r.width;
+    x = Math.max(0.05, Math.min(0.95, x));
+    real.style.clipPath = `inset(0 ${(1-x)*100}% 0 0)`;
+    handle.style.left = (x * 100) + '%';
+    handle.setAttribute('aria-valuenow', Math.round(x * 100));
+  }
+  handle.addEventListener('mousedown', e => { dragging = true; e.preventDefault(); });
+  window.addEventListener('mouseup', () => dragging = false);
+  window.addEventListener('mousemove', e => { if (dragging) setPos(e.clientX); });
+
+  handle.addEventListener('touchstart', e => { dragging = true; }, {passive:true});
+  window.addEventListener('touchend', () => dragging = false);
+  window.addEventListener('touchmove', e => { if (dragging) setPos(e.touches[0].clientX); }, {passive:true});
+
+  handle.addEventListener('keydown', e => {
+    const r = wrap.getBoundingClientRect();
+    let x = parseFloat(handle.style.left) / 100 || 0.5;
+    if (e.key === 'ArrowLeft') x = Math.max(0.05, x - 0.05);
+    else if (e.key === 'ArrowRight') x = Math.min(0.95, x + 0.05);
+    else return;
+    e.preventDefault();
+    real.style.clipPath = `inset(0 ${(1-x)*100}% 0 0)`;
+    handle.style.left = (x * 100) + '%';
+    handle.setAttribute('aria-valuenow', Math.round(x * 100));
+  });
+
+  // init
+  real.style.clipPath = 'inset(0 50% 0 0)';
+})();
+
+/* ============================================================
+   VERIFY BATCH
+   ============================================================ */
+const batches = {
+  'HC-2026-0842': { keeper:'Ravi Kumar',   loc:'Mandya, Karnataka', date:'08 Sep 2026', health:'94.8% · Healthy' },
+  'HC-2026-0417': { keeper:'Ramesh Patel', loc:'Kutch, Gujarat',    date:'17 Apr 2026', health:'92.1% · Healthy' },
+  'HC-2026-0523': { keeper:'Sunita Devi',  loc:'Sundarbans, WB',    date:'23 May 2026', health:'88.4% · Healthy' }
+};
+
+// build QR grid
+(function buildQR(){
+  const qr = document.getElementById('qrBox');
+  const pattern = [
+    1,1,1,0,1,1,1,
+    1,0,0,1,0,0,1,
+    1,0,1,0,1,0,1,
+    0,1,0,1,0,1,0,
+    1,0,1,0,1,0,1,
+    1,0,0,1,0,0,1,
+    1,1,1,0,1,1,1
+  ];
+  qr.innerHTML = pattern.map(p => p ? '<span></span>' : '<span class="empty"></span>').join('');
+})();
+
+// sample chips
+(function buildChips(){
+  const wrap = document.getElementById('sampleChips');
+  Object.keys(batches).forEach(id => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.textContent = id;
+    b.onclick = () => {
+      document.getElementById('batchInput').value = id;
+      verifyBatch();
+    };
+    wrap.appendChild(b);
+  });
+})();
+
+function verifyBatch(){
+  const id = document.getElementById('batchInput').value.trim().toUpperCase();
+  const data = batches[id];
+  const result = document.getElementById('verifyResult');
+  const hint = document.getElementById('verifyHint');
+  const qr = document.getElementById('qrBox');
+
+  qr.classList.add('scanning');
+  setTimeout(() => qr.classList.remove('scanning'), 800);
+
+  if (!data){
+    hint.textContent = '✗ We couldn\'t find that batch. Try the sample: HC-2026-0842';
+    hint.style.color = 'var(--red)';
+    result.classList.remove('show');
+    showToast('Batch not found', true);
+    return;
+  }
+  hint.textContent = '✓ This batch is registered and authentic.';
+  hint.style.color = '';
+
+  document.getElementById('r-id').textContent = id;
+  document.getElementById('r-keeper').textContent = data.keeper;
+  document.getElementById('r-loc').textContent = data.loc;
+  document.getElementById('r-date').textContent = data.date;
+  document.getElementById('r-health').textContent = data.health;
+  document.getElementById('r-hash').textContent =
+    '0x' + Array.from({length:12}, () => Math.floor(Math.random()*16).toString(16)).join('') +
+    '…' + Array.from({length:6}, () => Math.floor(Math.random()*16).toString(16)).join('');
+
+  result.classList.remove('show');
+  void result.offsetWidth;
+  result.classList.add('show');
+  result.scrollIntoView({ behavior:'smooth', block:'center' });
+  showToast('✓ Batch ' + id + ' verified');
+  launchConfetti();
+}
+
+/* ============================================================
+   CONFETTI
+   ============================================================ */
+function launchConfetti(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const colors = ['#f5b942', '#ffd580', '#7dd87d', '#fff'];
+  const count = 40;
+  for (let i = 0; i < count; i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.top = '-20px';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.animationDuration = (1.8 + Math.random() * 1.4) + 's';
+    c.style.animationDelay = (Math.random() * 0.3) + 's';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3600);
+  }
+}
+
+/* ============================================================
+   TABS
+   ============================================================ */
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ============================================================
+   FAQ ACCORDION
+   ============================================================ */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const btn = item.querySelector('.faq-q');
+  const ans = item.querySelector('.faq-a');
+  btn.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(other => {
+      other.classList.remove('open');
+      other.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      other.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if (!isOpen){
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+      ans.style.maxHeight = ans.scrollHeight + 'px';
+    }
+  });
+});
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
+const themeBtn = document.getElementById('themeBtn');
+const savedTheme = localStorage.getItem('hc-theme');
+if (savedTheme){
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  themeBtn.textContent = savedTheme === 'dark' ? '☾' : '☀';
+}
+themeBtn.addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('hc-theme', next);
+  themeBtn.textContent = next === 'dark' ? '☾' : '☀';
+  showToast(next === 'dark' ? 'Dark mode' : 'Light mode');
+});
+
+/* ============================================================
+   AMBIENCE (Web Audio — optional bee hum)
+   ============================================================ */
+const soundBtn = document.getElementById('soundBtn');
+let audioCtx = null, osc = null, gain = null, audioOn = false;
+soundBtn.addEventListener('click', () => {
+  audioOn = !audioOn;
+  soundBtn.classList.toggle('active', audioOn);
+  if (audioOn){
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      osc = audioCtx.createOscillator();
+      gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.value = 110;
+      gain.gain.value = 0.012;
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start();
+      // subtle vibrato
+      const lfo = audioCtx.createOscillator();
+      const lfoGain = audioCtx.createGain();
+      lfo.frequency.value = 5.5;
+      lfoGain.gain.value = 4;
+      lfo.connect(lfoGain).connect(osc.frequency);
+      lfo.start();
+      showToast('Ambience on');
+    } catch(err){ showToast('Audio not available', true); audioOn = false; soundBtn.classList.remove('active'); }
+  } else {
+    if (osc){ try { osc.stop(); } catch(e){} osc = null; }
+    if (gain){ gain.disconnect(); gain = null; }
+    showToast('Ambience off');
+  }
+});
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let toastTimer;
+function showToast(msg, isError = false){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', isError);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ============================================================
+   SMOOTH ANCHOR OFFSET
+   ============================================================ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target){
+      e.preventDefault();
+      const y = target.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({top:y, behavior:'smooth'});
+    }
+  });
+});
+</script>
+</body>
+</html>
