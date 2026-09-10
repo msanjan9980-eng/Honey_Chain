@@ -494,13 +494,26 @@
   .verify-form button:hover{background:var(--honey-soft);}
   .verify-form button:active{transform:scale(.97);}
   .verify-hint{margin-top:14px;font-size:0.88rem;color:var(--dim);transition:color .2s;}
-  .sample-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
-  .chip{
-    background:transparent;border:1px solid var(--border-2);color:var(--muted);
-    padding:6px 12px;border-radius:20px;font-size:0.78rem;cursor:pointer;
-    transition:.2s;font-family:ui-monospace,monospace;
+
+  /* New trust badges (replaces sample chips) */
+  .verify-badges{
+    display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;
   }
-  .chip:hover{border-color:var(--honey);color:var(--honey);background:var(--glow);}
+  .verify-badges .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:transparent;border:1px solid var(--border-2);
+    color:var(--muted);font-size:0.82rem;font-weight:500;
+    padding:7px 14px;border-radius:20px;
+    transition:.2s var(--ease);
+  }
+  .verify-badges .badge::before{
+    content:"✓";color:var(--honey);font-weight:800;
+    font-size:0.9rem;line-height:1;
+  }
+  .verify-badges .badge:hover{
+    border-color:var(--honey);color:var(--text);background:var(--glow);
+  }
+
   .verify-sample{text-align:right;}
   .verify-sample .code{
     font-size:1.5rem;font-weight:800;color:var(--honey);letter-spacing:-0.5px;
@@ -1109,9 +1122,13 @@
           <span aria-hidden="true">📷</span> Scan QR code
         </button>
         <div class="verify-hint" id="verifyHint" role="status" aria-live="polite">
-          Try the sample batch ID above to see a real record.
+          Enter any batch ID or scan the QR code on your jar.
         </div>
-        <div class="sample-chips" id="sampleChips"></div>
+        <div class="verify-badges">
+          <span class="badge">No app needed</span>
+          <span class="badge">Works on any phone</span>
+          <span class="badge">Backed by live hive data</span>
+        </div>
       </div>
       <div class="verify-sample reveal d1">
         <div class="code">
@@ -1757,12 +1774,12 @@ function refreshHive(){
 (function buildTicker(){
   const track = document.getElementById('tickerTrack');
   const items = [
-    'New batch registered · <b>HC-2026-0842</b> · Mandya, Karnataka <span class="pos">+18.6 kg</span>',
+    'New batch registered · <b>HC-2026-0842</b> · Chikmagaluru, Karnataka <span class="pos">+18.6 kg</span>',
     'Hive <b>HC-0247</b> health stable at <b>94.8%</b>',
     'Harvest window opening in <b>~5 days</b> · Karnataka cluster',
-    'Batch <b>HC-2026-0417</b> verified by buyer in Ahmedabad',
+    'Batch <b>HC-2026-0417</b> verified by buyer in Yelahanka',
     'Colony audio check complete · <b>no disease signature</b>',
-    'Batch <b>HC-2026-0523</b> shipped to Kolkata · in transit',
+    'Batch <b>HC-2026-0523</b> shipped to Palakad · in transit',
     'Live weight trend rising across <b>4 active hives</b>'
   ];
   const html = items.map(t => `<span class="ticker-item"><span class="dot"></span>${t}</span>`).join('');
@@ -1939,7 +1956,7 @@ async function verifyBatch(rawId) {
     const data = batches[id];
 
     if (!data) {
-      hint.textContent = `✗ We couldn't find batch ${id}. Try HC-2026-0842`;
+      hint.textContent = `✗ We couldn't find batch ${id}. Please check the ID on your jar.`;
       hint.style.color = 'var(--red)';
       result.classList.remove('show');
       showToast('Batch not found', true);
@@ -2022,28 +2039,6 @@ document.addEventListener('keydown', (e) => {
     closeScanner();
   }
 });
-
-/* ---------- Sample chips (all 10 batches) ---------- */
-(function buildChips(){
-  const wrap = document.getElementById('sampleChips');
-  const ids = [
-    'HC-2026-0842', 'HC-2026-0417', 'HC-2026-0523',
-    'HC-2026-0614', 'HC-2026-0701', 'HC-2026-0728',
-    'HC-2026-0805', 'HC-2026-0819', 'HC-2026-0830',
-    'HC-2026-0906'
-  ];
-  ids.forEach(id => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'chip';
-    b.textContent = id;
-    b.onclick = () => {
-      document.getElementById('batchInput').value = id;
-      verifyBatch(id);
-    };
-    wrap.appendChild(b);
-  });
-})();
 
 /* ---------- Decorative QR visual ---------- */
 (function buildQR(){
