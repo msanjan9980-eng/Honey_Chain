@@ -74,7 +74,7 @@
     html{scroll-behavior:auto;}
   }
 
-  /* ============ PRELOADER ============ */
+  /* PRELOADER */
   #preloader{
     position:fixed;inset:0;z-index:9999;
     background:var(--bg);
@@ -94,7 +94,7 @@
   .pre-brand{font-size:0.85rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;font-weight:600;}
   .pre-brand b{color:var(--honey);}
 
-  /* ============ CURSOR GLOW ============ */
+  /* CURSOR GLOW */
   .cursor-glow{
     position:fixed;top:0;left:0;width:420px;height:420px;
     border-radius:50%;pointer-events:none;z-index:1;
@@ -104,7 +104,7 @@
   }
   @media (hover:hover) and (pointer:fine){ .cursor-glow{opacity:1;} }
 
-  /* ============ SCROLL PROGRESS ============ */
+  /* SCROLL PROGRESS */
   .scroll-progress{
     position:fixed;top:0;left:0;height:3px;width:0%;
     background:linear-gradient(90deg,var(--honey),var(--honey-soft));
@@ -112,7 +112,7 @@
     box-shadow:0 0 12px var(--honey);
   }
 
-  /* ============ TICKER ============ */
+  /* TICKER */
   .ticker{
     background:var(--bg-2);border-bottom:1px solid var(--border);
     padding:8px 0;overflow:hidden;position:relative;z-index:50;
@@ -129,7 +129,7 @@
   .ticker-item b{color:var(--text);font-weight:600;}
   .ticker-item .pos{color:var(--green);}
 
-  /* ============ NAV ============ */
+  /* NAV */
   nav{
     position:sticky;top:0;z-index:100;
     background:color-mix(in srgb, var(--bg) 86%, transparent);
@@ -174,7 +174,7 @@
   }
   .nav-cta:hover{background:var(--honey-soft);transform:translateY(-1px);}
 
-  /* ============ HERO ============ */
+  /* HERO */
   .hero{
     padding:80px 32px 70px;max-width:var(--maxw);margin:0 auto;
     display:grid;grid-template-columns:1.1fr 0.9fr;gap:70px;align-items:center;
@@ -288,7 +288,7 @@
     font-size:0.75rem;color:var(--dim);letter-spacing:1.5px;font-weight:600;
   }
 
-  /* ============ TRUST STRIP ============ */
+  /* TRUST STRIP */
   .trust-strip{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-2);padding:22px 32px;overflow:hidden;transition:background .4s;}
   .trust-inner{
     max-width:var(--maxw);margin:0 auto;display:flex;justify-content:center;
@@ -298,14 +298,14 @@
   .trust-inner span::before{content:"✓";color:var(--honey);font-weight:700;}
   .trust-inner span:hover{color:var(--text);}
 
-  /* ============ SECTION BASE ============ */
+  /* SECTION BASE */
   section{padding:88px 32px;max-width:var(--maxw);margin:0 auto;position:relative;z-index:2;}
   .section-eyebrow{color:var(--honey);font-size:0.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
   .section-title{font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:800;line-height:1.15;letter-spacing:-0.5px;margin-bottom:16px;}
   .section-title .accent{color:var(--honey);}
   .section-lead{color:var(--muted);font-size:1.02rem;line-height:1.7;max-width:520px;}
 
-  /* ============ REVEAL ============ */
+  /* REVEAL */
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s var(--ease),transform .8s var(--ease);}
   .reveal.in{opacity:1;transform:translateY(0);}
   .reveal.d1{transition-delay:.06s;}
@@ -313,7 +313,7 @@
   .reveal.d3{transition-delay:.18s;}
   .reveal.d4{transition-delay:.24s;}
 
-  /* ============ STEP CARDS ============ */
+  /* STEP CARDS */
   .steps-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:52px;}
   .steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
   .step-card{
@@ -338,7 +338,7 @@
   .step-card p{font-size:0.94rem;color:var(--muted);line-height:1.6;}
   .step-card .tech-note{margin-top:16px;padding-top:14px;border-top:1px dashed var(--border);font-size:0.8rem;color:var(--dim);line-height:1.55;}
 
-  /* ============ DASHBOARD ============ */
+  /* DASHBOARD */
   .dash-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:44px;}
   .dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;}
   .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;transition:background .4s;}
@@ -369,7 +369,7 @@
   .metric .delta{font-size:0.82rem;color:var(--green);}
   .sparkline{width:100%;height:22px;margin-top:6px;}
 
-  /* ============ CHART ============ */
+  /* CHART */
   .chart-label{font-size:0.86rem;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:14px;font-weight:500;}
   .line-chart{position:relative;width:100%;height:220px;}
   .line-chart svg{width:100%;height:100%;display:block;overflow:visible;}
@@ -417,7 +417,7 @@
   }
   .view-report:hover{border-color:var(--honey);color:var(--honey);background:var(--glow);}
 
-  /* ============ BLOCKCHAIN LEDGER ============ */
+  /* BLOCKCHAIN LEDGER */
   .ledger-wrap{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
     padding:32px;overflow:hidden;position:relative;
@@ -448,7 +448,7 @@
   .block-data b{color:var(--text);font-weight:600;}
   .ledger-status{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:0.82rem;color:var(--dim);}
 
-  /* ============ COMPARISON SLIDER ============ */
+  /* COMPARISON SLIDER */
   .compare-wrap{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
     overflow:hidden;position:relative;user-select:none;
@@ -479,7 +479,7 @@
   .compare-labels{position:absolute;top:20px;left:20px;right:20px;display:flex;justify-content:space-between;z-index:6;pointer-events:none;}
   .compare-labels span{background:rgba(0,0,0,0.6);color:#fff;padding:6px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:1px;backdrop-filter:blur(6px);}
 
-  /* ============ VERIFY ============ */
+  /* VERIFY */
   .verify-section{
     background:linear-gradient(135deg, var(--glow), transparent 60%);
     border:1px solid var(--border);border-radius:22px;
@@ -573,7 +573,7 @@
   }
   .verify-hash b{color:var(--honey);}
 
-  /* ============ QR SCANNER ============ */
+  /* QR SCANNER */
   .scan-btn{
     margin-top:12px;
     display:inline-flex;align-items:center;gap:8px;
@@ -634,7 +634,7 @@
   .verify-loading .dot:nth-child(3){animation-delay:.3s;}
   @keyframes dotBlink{0%,100%{opacity:.3;}50%{opacity:1;}}
 
-  /* ============ TABS ============ */
+  /* TABS */
   .stack-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:36px;}
   .tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;border-bottom:1px solid var(--border);}
   .tab{
@@ -679,7 +679,7 @@
   .stack-visual .layer .txt{font-size:0.86rem;color:var(--text);font-weight:500;}
   .stack-visual .layer .sub{font-size:0.74rem;color:var(--dim);margin-top:2px;}
 
-  /* ============ TESTIMONIALS ============ */
+  /* TESTIMONIALS */
   .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;}
   .test-card{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
@@ -699,7 +699,7 @@
   .test-role{font-size:0.8rem;color:var(--dim);}
   .test-stars{color:var(--honey);font-size:0.85rem;letter-spacing:2px;margin-bottom:12px;}
 
-  /* ============ FAQ ============ */
+  /* FAQ */
   .faq-list{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px;}
   .faq-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color .25s;}
   .faq-item:hover{border-color:var(--border-2);}
@@ -714,14 +714,14 @@
   .faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease);}
   .faq-a-inner{padding:0 24px 22px;font-size:0.94rem;color:var(--muted);line-height:1.7;}
 
-  /* ============ FOOTER ============ */
+  /* FOOTER */
   footer{border-top:1px solid var(--border);padding:44px 32px;margin-top:20px;position:relative;z-index:2;}
   .footer-inner{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
   footer .l{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.05rem;}
   footer .l .mark{color:var(--honey);}
   footer .r{color:var(--dim);font-size:0.85rem;letter-spacing:0.5px;text-align:right;}
 
-  /* ============ FLOATING BEE ============ */
+  /* FLOATING BEE */
   .float-bee{
     position:fixed;z-index:90;font-size:1.6rem;pointer-events:none;
     transition:transform .6s var(--ease),opacity .3s;
@@ -730,7 +730,7 @@
   }
   .float-bee.show{opacity:1;}
 
-  /* ============ BACK TO TOP ============ */
+  /* BACK TO TOP */
   .to-top{
     position:fixed;right:22px;bottom:22px;z-index:150;
     width:46px;height:46px;border-radius:50%;background:var(--card);
@@ -742,7 +742,7 @@
   .to-top.show{opacity:1;transform:translateY(0);pointer-events:auto;}
   .to-top:hover{background:var(--honey);color:#111;border-color:var(--honey);}
 
-  /* ============ TOAST ============ */
+  /* TOAST */
   #toast{
     position:fixed;bottom:28px;left:50%;transform:translate(-50%,120px);
     background:var(--honey);color:#111;padding:14px 26px;border-radius:12px;
@@ -755,7 +755,7 @@
   #toast.show{transform:translate(-50%,0);opacity:1;}
   #toast.error{background:var(--red);color:#2a0a0a;box-shadow:0 10px 40px rgba(232,138,138,0.3);}
 
-  /* ============ CONFETTI ============ */
+  /* CONFETTI */
   .confetti{
     position:fixed;width:10px;height:10px;pointer-events:none;z-index:300;
     animation:confettiFall 2.5s linear forwards;
@@ -765,7 +765,7 @@
     100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
   }
 
-  /* ============ RESPONSIVE ============ */
+  /* RESPONSIVE */
   @media(max-width:960px){
     .hero{grid-template-columns:1fr;gap:48px;padding:56px 24px;}
     .hive-visual{margin:0 auto;}
@@ -1392,8 +1392,8 @@
 <!-- QR SCANNER LIBRARY -->
 <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 
-<!-- BACKEND CONFIG — change this to your deployed API URL -->
-<script>window.HONEYCHAIN_API = 'https://honeychain-api.onrender.com';</script>
+<!-- ⚠️ IMPORTANT: change this to your deployed backend URL (no trailing slash) -->
+<script>window.HONEYCHAIN_API = 'https://YOUR-BACKEND-URL.onrender.com';</script>
 
 <script>
 /* ============================================================
@@ -1905,7 +1905,6 @@ setInterval(addBlock, 3800);
    ============================================================ */
 const API_BASE = (window.HONEYCHAIN_API || 'http://localhost:4000').replace(/\/$/, '');
 
-// Small helper for fetch with timeout
 async function fetchJSON(url, opts = {}, timeoutMs = 8000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeoutMs);
@@ -1916,7 +1915,6 @@ async function fetchJSON(url, opts = {}, timeoutMs = 8000) {
   } finally { clearTimeout(t); }
 }
 
-// Debounce duplicate scans
 let lastScanned = { id: '', at: 0 };
 function shouldIgnoreScan(id) {
   const now = Date.now();
@@ -1925,7 +1923,6 @@ function shouldIgnoreScan(id) {
   return false;
 }
 
-// Accepts plain IDs, full URLs, /verify/<id>, ?batch=<id>
 function extractBatchId(input) {
   if (!input) return '';
   const s = String(input).trim();
@@ -1939,7 +1936,6 @@ function extractBatchId(input) {
   return s.toUpperCase();
 }
 
-// Format the timeline event type → human readable
 function prettyEvent(type) {
   return ({
     harvested: 'Harvested',
@@ -2070,17 +2066,15 @@ async function closeScanner() {
   }
 }
 
-// Wire up the scan button
 document.getElementById('scanBtn').addEventListener('click', openScanner);
 
-// ESC closes the modal
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && document.getElementById('scanModal').classList.contains('show')) {
     closeScanner();
   }
 });
 
-/* ---------- Sample chips (trigger real fetch) ---------- */
+/* ---------- Sample chips ---------- */
 (function buildChips(){
   const wrap = document.getElementById('sampleChips');
   const ids = ['HC-2026-0842', 'HC-2026-0417', 'HC-2026-0523'];
@@ -2097,7 +2091,7 @@ document.addEventListener('keydown', (e) => {
   });
 })();
 
-/* ---------- Decorative QR visual (sample) ---------- */
+/* ---------- Decorative QR visual ---------- */
 (function buildQR(){
   const qr = document.getElementById('qrBox');
   const pattern = [
@@ -2112,7 +2106,7 @@ document.addEventListener('keydown', (e) => {
   qr.innerHTML = pattern.map(p => p ? '<span></span>' : '<span class="empty"></span>').join('');
 })();
 
-/* ---------- Deep-link: ?batch=HC-2026-0842 ---------- */
+/* ---------- Deep-link ?batch=... ---------- */
 (function checkDeepLink(){
   const params = new URLSearchParams(location.search);
   const id = params.get('batch');
