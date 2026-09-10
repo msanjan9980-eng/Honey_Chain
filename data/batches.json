@@ -60,5 +60,150 @@
       { "type": "packaged", "date": "24 May 2026", "location": "Sundarbans, WB", "actor": "Packing Unit" },
       { "type": "shipped", "date": "25 May 2026", "location": "In transit", "actor": "Logistics" }
     ]
+  },
+  "HC-2026-0614": {
+    "batchId": "HC-2026-0614",
+    "verified": true,
+    "beekeeper": "Lakshmi Narayanan",
+    "location": "Coorg, Karnataka",
+    "harvestDate": "14 Jun 2026",
+    "healthAtHarvest": 96.2,
+    "healthLabel": "Excellent",
+    "weightKg": 22.4,
+    "moisturePct": 16.8,
+    "onchainHash": "0x9b3e5a7c1f8d2e4a6b0c9f3e5a7b1d4c8e2f…6b81a3",
+    "blockNumber": 7185,
+    "ipfsCid": "bafybeicwqnmkc7fah3lq5vzpxrdtv6gojzxv3kyhr4wh6t7pr32wq6zvxe",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "14 Jun 2026", "location": "Coorg, Karnataka", "actor": "Lakshmi Narayanan" },
+      { "type": "extracted_and_tested", "date": "15 Jun 2026", "location": "Coorg, Karnataka", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "15 Jun 2026", "location": "Coorg, Karnataka", "actor": "Packing Unit" },
+      { "type": "shipped", "date": "16 Jun 2026", "location": "In transit", "actor": "Logistics" }
+    ]
+  },
+  "HC-2026-0701": {
+    "batchId": "HC-2026-0701",
+    "verified": true,
+    "beekeeper": "Anand Deshmukh",
+    "location": "Mahabaleshwar, Maharashtra",
+    "harvestDate": "01 Jul 2026",
+    "healthAtHarvest": 91.5,
+    "healthLabel": "Healthy",
+    "weightKg": 17.8,
+    "moisturePct": 17.5,
+    "onchainHash": "0x4d8a2f6c9b1e3d5a7f0c8b2e4d6a8f1c3b5d…2e94f7",
+    "blockNumber": 7592,
+    "ipfsCid": "bafybeibqxh4vz7m2j5tk8yprnw6sfc3gdae9lzq1uo0wrxjtd6vh2pq3ma",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "01 Jul 2026", "location": "Mahabaleshwar, Maharashtra", "actor": "Anand Deshmukh" },
+      { "type": "extracted_and_tested", "date": "02 Jul 2026", "location": "Mahabaleshwar, Maharashtra", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "02 Jul 2026", "location": "Mahabaleshwar, Maharashtra", "actor": "Packing Unit" },
+      { "type": "shipped", "date": "03 Jul 2026", "location": "In transit", "actor": "Logistics" }
+    ]
+  },
+  "HC-2026-0728": {
+    "batchId": "HC-2026-0728",
+    "verified": true,
+    "beekeeper": "Priya Menon",
+    "location": "Wayanad, Kerala",
+    "harvestDate": "28 Jul 2026",
+    "healthAtHarvest": 89.7,
+    "healthLabel": "Healthy",
+    "weightKg": 15.6,
+    "moisturePct": 18.1,
+    "onchainHash": "0x6e2c8b4a1f9d3e5c7b0a2f8d4c6e1b9a3f5d…8c37b2",
+    "blockNumber": 7834,
+    "ipfsCid": "bafybeidkfmvz3q7hx2j5wtn9yspr4gcb8el6zq0aurmwixjtd3vh5pq7mb",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "28 Jul 2026", "location": "Wayanad, Kerala", "actor": "Priya Menon" },
+      { "type": "extracted_and_tested", "date": "29 Jul 2026", "location": "Wayanad, Kerala", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "29 Jul 2026", "location": "Wayanad, Kerala", "actor": "Packing Unit" }
+    ]
+  },
+  "HC-2026-0805": {
+    "batchId": "HC-2026-0805",
+    "verified": true,
+    "beekeeper": "Harpreet Singh",
+    "location": "Kangra, Himachal Pradesh",
+    "harvestDate": "05 Aug 2026",
+    "healthAtHarvest": 97.1,
+    "healthLabel": "Excellent",
+    "weightKg": 24.8,
+    "moisturePct": 16.2,
+    "onchainHash": "0x1a5e9c3b7f2d4a6e8b0c1f5d3a9e7c2b4f6d…5a18e9",
+    "blockNumber": 8046,
+    "ipfsCid": "bafybeihrtwvz6q3kxp9j2mty7sfn4bgc1el8zd0auqmwixjtd9vh3pq2mc",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "05 Aug 2026", "location": "Kangra, Himachal Pradesh", "actor": "Harpreet Singh" },
+      { "type": "extracted_and_tested", "date": "06 Aug 2026", "location": "Kangra, Himachal Pradesh", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "06 Aug 2026", "location": "Kangra, Himachal Pradesh", "actor": "Packing Unit" },
+      { "type": "shipped", "date": "07 Aug 2026", "location": "In transit", "actor": "Logistics" }
+    ]
+  },
+  "HC-2026-0819": {
+    "batchId": "HC-2026-0819",
+    "verified": true,
+    "beekeeper": "Meena Kumari",
+    "location": "Nainital, Uttarakhand",
+    "harvestDate": "19 Aug 2026",
+    "healthAtHarvest": 93.3,
+    "healthLabel": "Healthy",
+    "weightKg": 19.2,
+    "moisturePct": 17.0,
+    "onchainHash": "0x2f8b6e4c1a9d7e3b5c0a8f2d6e4b1a9c7f3d…3d72a8",
+    "blockNumber": 8221,
+    "ipfsCid": "bafybeifqyxwv5p2jzm8n3kty6sdg4bch9el2zr0auqmwixjtd5vh8pq1md",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "19 Aug 2026", "location": "Nainital, Uttarakhand", "actor": "Meena Kumari" },
+      { "type": "extracted_and_tested", "date": "20 Aug 2026", "location": "Nainital, Uttarakhand", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "20 Aug 2026", "location": "Nainital, Uttarakhand", "actor": "Packing Unit" },
+      { "type": "shipped", "date": "21 Aug 2026", "location": "In transit", "actor": "Logistics" }
+    ]
+  },
+  "HC-2026-0830": {
+    "batchId": "HC-2026-0830",
+    "verified": true,
+    "beekeeper": "Karthik Reddy",
+    "location": "Nalgonda, Telangana",
+    "harvestDate": "30 Aug 2026",
+    "healthAtHarvest": 87.6,
+    "healthLabel": "Healthy",
+    "weightKg": 13.9,
+    "moisturePct": 18.6,
+    "onchainHash": "0x7b3a9f5c2e8d1a4b6f0c3e7d5a9b2f8c1e4d…9f26c1",
+    "blockNumber": 8357,
+    "ipfsCid": "bafybeigpxwmv4q3kxz7n2jty8sfd5bcg1eh9zr0auqmwixjtd6vh4pq3me",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "30 Aug 2026", "location": "Nalgonda, Telangana", "actor": "Karthik Reddy" },
+      { "type": "extracted_and_tested", "date": "31 Aug 2026", "location": "Nalgonda, Telangana", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "31 Aug 2026", "location": "Nalgonda, Telangana", "actor": "Packing Unit" }
+    ]
+  },
+  "HC-2026-0906": {
+    "batchId": "HC-2026-0906",
+    "verified": true,
+    "beekeeper": "Fatima Begum",
+    "location": "Sundarbans, WB",
+    "harvestDate": "06 Sep 2026",
+    "healthAtHarvest": 90.9,
+    "healthLabel": "Healthy",
+    "weightKg": 17.1,
+    "moisturePct": 17.4,
+    "onchainHash": "0x3c8e5b1f7a9d4c2e6b0f3a8d5c1e9b4f7a2d…4e85f3",
+    "blockNumber": 8502,
+    "ipfsCid": "bafybeihsxwnv7q2kzm9n4jty5sfd8bcg3eh1zr0auqmwixjtd2vh7pq6mf",
+    "status": "verified",
+    "events": [
+      { "type": "harvested", "date": "06 Sep 2026", "location": "Sundarbans, WB", "actor": "Fatima Begum" },
+      { "type": "extracted_and_tested", "date": "07 Sep 2026", "location": "Sundarbans, WB", "actor": "Quality Lab" },
+      { "type": "packaged", "date": "07 Sep 2026", "location": "Sundarbans, WB", "actor": "Packing Unit" },
+      { "type": "shipped", "date": "08 Sep 2026", "location": "In transit", "actor": "Logistics" }
+    ]
   }
 }
